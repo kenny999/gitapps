@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:key="enabled"
+        android:title="@string/enabled"
+        android:summary="@string/enabled_explanation"
+        android:defaultValue="false" />
+
+    <RingtonePreference
+        android:key="ringtone"
+        android:title="@string/select_tone"
+        android:ringtoneType="all"
+        android:showDefault="true"
+        android:showSilent="false"
+        android:summary="@string/tone_explanation"
+        android:defaultValue="content://settings/system/alarm_alert" />
+
+    <com.smallscore.chargewarner.TimePreference
+        android:name="@string/warning_time"
+        android:summary="@string/warningTime_explanation"
+        android:title="@string/warning_time"
+        android:key="warningTime"
+        android:defaultValue="23:00"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    />
+
+    <CheckBoxPreference
+        android:key="playOnMaxVolume"
+        android:title="@string/playOnMaxVolume"
+        android:summary="@string/playOnMaxVolume_explanation"
+        android:defaultValue="true" />
+</PreferenceScreen>

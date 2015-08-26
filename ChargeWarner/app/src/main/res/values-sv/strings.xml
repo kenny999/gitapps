@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">ChargeWarner</string>
+    <string name="help">Hjälp</string>
+    <string name="enabled">Varning aktiverad</string>
+    <string name="select_tone">Välj signal</string>
+    <string name="title_activity_warning_popped_screen">ChargeWarner</string>
+    <string name="warning_popped">Varning!</string>
+    <string name="warning_popped_long">Laddaren är i.</string>
+    <string name="dismiss">Avbryt</string>
+    <string name="ok_button">OK</string>
+    <string name="cancel_button">Avbryt</string>
+    <string name="enabled_explanation">Aktivera eller avaktivera varning</string>
+    <string name="tone_explanation">Varningen kommer spela detta ljud</string>
+    <string name="warning_time">Varningstid</string>
+    <string name="warningTime_explanation">Tid då varningen kommer spelas</string>
+    <string name="title_activity_help">Hjälp</string>
+    <string name="help_text_short">Denna app kommer spela ett ljud om laddaren är i vid en viss tidpunkt. Du behöver aktivera varningen på nästa skärm.</string>
+    <string name="help_text"><![CDATA[
+    <p>
+    Denna app kommer spela ett ljud om laddaren är i vid en viss tidpunkt. </p>
+    <p>Syftet är att kontrollera t.ex. vid sängdags, för att undvika att laddaren är i över natten. Appen komer undersöka om laddaren är i vid angiven tidpunkt, och i så fall spela ett ljud.</p>
+     <p>Med inställningarna kan du::<br/><br/>
+      * Aktivera/avaktivera varningen<br/>
+      * Välja vilket ljud som ska spelas<br/>
+      * Välja den tidpunkt då appen ska kontrollera om laddaren är i<br/>
+      * Bestämma om varningen ska spelas på max volym, även om enheten är i tyst läge
+      </p>]]></string>
+    <string name="playOnMaxVolume">Spela på max volym</string>
+    <string name="playOnMaxVolume_explanation">Tillåt varningen spelas på max volym, även om enheten är i tyst läge</string>
+</resources>
