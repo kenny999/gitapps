@@ -5,16 +5,9 @@ import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Handler;
-import android.os.PowerManager;
-import android.preference.PreferenceManager;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,12 +22,17 @@ public class WarningPoppedScreen extends Activity {
     private MediaPlayer mediaPlayer;
     private int oldVolume;
     private int oldRingerMode;
-    private static final int WAKELOCK_TIMEOUT = 60 * 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_warning_popped_screen);
+        setFlagsToKeepScreenOn();
+        WarningService.releaseWakeLock();
+        AudioManager am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+        setupMedia(am);
+        createDismissButton(am);
+        playAlarmTone();
     }
 
     @Override
@@ -50,31 +48,6 @@ public class WarningPoppedScreen extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if(deviceSilentAndNotAllowedMaxVolume()){
-            WarningService.releaseWakeLock();
-            return;
-        }
-        setFlagsToKeepScreenOn();
-        WarningService.releaseWakeLock();
-        AudioManager am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
-        setupMedia(am);
-        createDismissButton(am);
-        playAlarmTone();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if(mediaPlayer != null){
-            AudioManager am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
-            resetSound(am);
-        }
     }
 
     private void createDismissButton(final AudioManager am) {
@@ -107,17 +80,6 @@ public class WarningPoppedScreen extends Activity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
-    }
-
-    private boolean deviceSilentAndNotAllowedMaxVolume() {
-        final AudioManager am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
-        if(am.getRingerMode() == AudioManager.RINGER_MODE_SILENT || am.getStreamVolume(AudioManager.STREAM_ALARM) == 0) {
-            boolean playOnMaxVolume = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("playOnMaxVolume", false);
-            if(! playOnMaxVolume){
-                return true;
-            }
-        }
-        return false;
     }
 
     private void playAlarmTone() {

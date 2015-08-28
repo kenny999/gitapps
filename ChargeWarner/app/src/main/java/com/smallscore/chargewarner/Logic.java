@@ -1,10 +1,14 @@
 package com.smallscore.chargewarner;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.BatteryManager;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 
@@ -41,6 +45,20 @@ public class Logic {
         setAlarmIfEnabled(context, PreferenceManager.getDefaultSharedPreferences(context));
     }
 
+    public static void onWarningNotPopped(Context context) {
+        setAlarmIfEnabled(context, PreferenceManager.getDefaultSharedPreferences(context));
+    }
+
+    public static boolean shouldPlayWarning(Context context) {
+        if(deviceSilentAndNotAllowedMaxVolume(context)){
+            return false;
+        }
+        if(pluggedToCharger(context)){
+            return true;
+        }
+        return false;
+    }
+
     private static void setAlarmIfEnabled(Context context, SharedPreferences sharedPreferences) {
         boolean enabled = sharedPreferences.getBoolean("enabled", false);
         if(enabled){
@@ -51,6 +69,10 @@ public class Logic {
     }
 
     private static Calendar makeCalendar(Context context) {
+        boolean stabilityTest = false;
+        if(stabilityTest){
+            return doStabilityTest();
+        }
         Calendar now = Calendar.getInstance();
 
         Calendar calendar = Calendar.getInstance();
@@ -78,4 +100,33 @@ public class Logic {
         }
         return calendar;
     }
+
+    private static Calendar doStabilityTest() {
+        Calendar now = Calendar.getInstance();
+        now.add(Calendar.SECOND, 10);
+        return now;
+    }
+
+    private static boolean deviceSilentAndNotAllowedMaxVolume(Context context) {
+        final AudioManager am = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
+        if(am.getRingerMode() == AudioManager.RINGER_MODE_SILENT || am.getStreamVolume(AudioManager.STREAM_ALARM) == 0) {
+            boolean playOnMaxVolume = PreferenceManager.getDefaultSharedPreferences(context).getBoolean("playOnMaxVolume", false);
+            if(! playOnMaxVolume){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean pluggedToCharger(Context context) {
+        // From http://developer.android.com/training/monitoring-device-state/battery-monitoring.html
+        IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        Intent batteryStatus = context.registerReceiver(null, ifilter);
+        // Are we charging / charged?
+        int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
+        boolean isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
+                status == BatteryManager.BATTERY_STATUS_FULL;
+        return isCharging;
+    }
+
 }
