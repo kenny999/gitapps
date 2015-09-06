@@ -50,9 +50,6 @@ public class Logic {
     }
 
     public static boolean shouldPlayWarning(Context context) {
-        if(deviceSilentAndNotAllowedMaxVolume(context)){
-            return false;
-        }
         if(pluggedToCharger(context)){
             return true;
         }
@@ -92,9 +89,9 @@ public class Logic {
         if(now.before(calendar)){
             // schedule for today.
             // if warning time is very close, add 10 seconds, to avoid that warning time is in the past due to real time problems
-            if(Math.abs(now.getTimeInMillis() - calendar.getTimeInMillis()) < 10000){
-                calendar.add(Calendar.MILLISECOND, 10000);
-            }
+       //     if(Math.abs(now.getTimeInMillis() - calendar.getTimeInMillis()) < 10000){
+         //       calendar.add(Calendar.MILLISECOND, 10000);
+           // } TODO
         } else {
             calendar.add(Calendar.DAY_OF_MONTH, 1);
         }
@@ -103,19 +100,8 @@ public class Logic {
 
     private static Calendar doStabilityTest() {
         Calendar now = Calendar.getInstance();
-        now.add(Calendar.SECOND, 10);
+        now.add(Calendar.SECOND, 30);
         return now;
-    }
-
-    private static boolean deviceSilentAndNotAllowedMaxVolume(Context context) {
-        final AudioManager am = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
-        if(am.getRingerMode() == AudioManager.RINGER_MODE_SILENT || am.getStreamVolume(AudioManager.STREAM_ALARM) == 0) {
-            boolean playOnMaxVolume = PreferenceManager.getDefaultSharedPreferences(context).getBoolean("playOnMaxVolume", false);
-            if(! playOnMaxVolume){
-                return true;
-            }
-        }
-        return false;
     }
 
     private static boolean pluggedToCharger(Context context) {

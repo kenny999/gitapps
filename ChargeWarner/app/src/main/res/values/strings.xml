@@ -21,10 +21,13 @@
     <p>The intention is to check for example at bed time, to avoid charging the device during night. The app will check if the charger is plugged in at the specified time, and if so, play the tone.</p>
      <p>With the settings, you are able to:<br/><br/>
       * Enable/disable the warning<br/>
-      * To decide which sound to play<br/>
       * Set time to check if the charger is plugged in<br/>
-      * Decide if the warning should be played at max volume, even if device is muted
+      * To decide which tone to play<br/>
+      * Set the tone\'s sound volume<br/>
+      * Decide if the tone should be played at even if device is muted
       </p>]]></string>
-    <string name="playOnMaxVolume">Play on max volume</string>
-    <string name="playOnMaxVolume_explanation">Allow warning to be played at max volume, also if device is muted</string>
+    <string name="playWhenSilent">Play also if device silent</string>
+    <string name="playWhenSilent_explanation">Allow tone to be played, also if device is muted</string>
+    <string name="warning_volume">Sound volume</string>
+    <string name="warning_volume_explanation">Set the tone\'s sound volume</string>
 </resources>

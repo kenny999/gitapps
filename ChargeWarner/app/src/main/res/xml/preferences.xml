@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:textSize="20px">
+
     <CheckBoxPreference
+        android:id="@+id/enabledCheckbox"
         android:key="enabled"
         android:title="@string/enabled"
         android:summary="@string/enabled_explanation"
-        android:defaultValue="false" />
+        android:defaultValue="false"
+        />
+
+    <com.smallscore.chargewarner.TimePreference
+        android:name="@string/warning_time"
+        android:summary="@string/warningTime_explanation"
+        android:title="@string/warning_time"
+        android:key="warningTime"
+        android:defaultValue="23:00"
+        android:layout_width="match_parent"
+         android:layout_height="match_parent" />
 
     <RingtonePreference
         android:key="ringtone"
@@ -15,19 +30,23 @@
         android:summary="@string/tone_explanation"
         android:defaultValue="content://settings/system/alarm_alert" />
 
-    <com.smallscore.chargewarner.TimePreference
-        android:name="@string/warning_time"
-        android:summary="@string/warningTime_explanation"
-        android:title="@string/warning_time"
-        android:key="warningTime"
-        android:defaultValue="23:00"
+    <com.smallscore.chargewarner.NumberPickerPreference
+        android:key="warningVolume"
+        android:title="@string/warning_volume"
+        android:summary="@string/warning_volume_explanation"
+        android:id="@+id/pref_num_picker"
+        android:layout="@layout/pref_layout"
+        android:defaultValue="10"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-    />
+        android:layout_height="match_parent"
+        />
 
     <CheckBoxPreference
-        android:key="playOnMaxVolume"
-        android:title="@string/playOnMaxVolume"
-        android:summary="@string/playOnMaxVolume_explanation"
-        android:defaultValue="true" />
-</PreferenceScreen>
+        android:key="playWhenSilent"
+        android:title="@string/playWhenSilent"
+        android:summary="@string/playWhenSilent_explanation"
+        android:defaultValue="true"        />
+    </PreferenceCategory>
+
+
+    </PreferenceScreen>

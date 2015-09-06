@@ -30,10 +30,9 @@ public class WarningService extends IntentService {
                 Logic.onWarningNotPopped(this);
                 return;
             }
-            PowerManager pm = (PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
-
-            acquireWakeLock(pm);
             if(intent != null) {
+                PowerManager pm = (PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
+                acquireWakeLock(pm);
                 Intent alarmIntent = new Intent(getBaseContext(), WarningPoppedScreen.class);
                 alarmIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 alarmIntent.putExtras(intent);

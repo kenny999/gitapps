@@ -2,11 +2,15 @@ package com.smallscore.chargewarner;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.AssetFileDescriptor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,18 +25,30 @@ public class WarningPoppedScreen extends Activity {
 
     private MediaPlayer mediaPlayer;
     private int oldVolume;
-    private int oldRingerMode;
+    private boolean deviceSilent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_warning_popped_screen);
         setFlagsToKeepScreenOn();
-        WarningService.releaseWakeLock();
+        if(savedInstanceState == null){
+            WarningService.releaseWakeLock();
+        }
         AudioManager am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
-        setupMedia(am);
         createDismissButton(am);
-        playAlarmTone();
+        deviceSilent = deviceSilentAndNotAllowedToPlay(this);
+        if(! deviceSilent) {
+            setupMedia(am);
+            playAlarmTone();
+        }
+
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        resetSound((AudioManager) getSystemService(Context.AUDIO_SERVICE));
     }
 
     @Override
@@ -65,14 +81,32 @@ public class WarningPoppedScreen extends Activity {
     private void setupMedia(AudioManager am) {
         mediaPlayer = new MediaPlayer();
         oldVolume = am.getStreamVolume(AudioManager.STREAM_ALARM);
-        oldRingerMode = am.getRingerMode();
     }
 
     private void resetSound(AudioManager am) {
-        try { mediaPlayer.stop(); } catch(Exception e){}
-        try { mediaPlayer.release(); } catch(Exception e){}
-        am.setStreamVolume(AudioManager.STREAM_ALARM, oldVolume, 0);
-        am.setRingerMode(oldRingerMode);
+        if(! deviceSilent) {
+            try {
+                mediaPlayer.stop();
+            } catch (Exception e) {
+            }
+            try {
+                mediaPlayer.release();
+            } catch (Exception e) {
+            }
+            am.setStreamVolume(AudioManager.STREAM_ALARM, oldVolume, 0);
+        }
+    }
+
+    private static boolean deviceSilentAndNotAllowedToPlay(Context context) {
+        final AudioManager am = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
+        int ringerMode = am.getRingerMode();
+        if(ringerMode == AudioManager.RINGER_MODE_SILENT || ringerMode == AudioManager.RINGER_MODE_VIBRATE) {
+            boolean playWhenSilent = PreferenceManager.getDefaultSharedPreferences(context).getBoolean("playWhenSilent", false);
+            if(! playWhenSilent){
+                return true;
+            }
+        }
+        return false;
     }
 
     private void setFlagsToKeepScreenOn() {
@@ -86,12 +120,7 @@ public class WarningPoppedScreen extends Activity {
         try {
             String uriStr = PreferenceManager.getDefaultSharedPreferences(this).getString("ringtone", null);
             Uri uri = Uri.parse(uriStr);
-            boolean playOnMaxVolume = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("playOnMaxVolume", false);
-            AudioManager am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
-            if(playOnMaxVolume){
-                am.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-                am.setStreamVolume(AudioManager.STREAM_ALARM, am.getStreamMaxVolume(AudioManager.STREAM_ALARM), 0);
-            }
+            setVolume();
             mediaPlayer.setDataSource(this, uri);
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
             mediaPlayer.setLooping(true);
@@ -106,6 +135,15 @@ public class WarningPoppedScreen extends Activity {
                 e2.printStackTrace();
             }
         }
+    }
+
+    private void setVolume() {
+        double volume = PreferenceManager.getDefaultSharedPreferences(this).getInt("warningVolume", 0);
+        AudioManager am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+        double streamMaxVolume = am.getStreamMaxVolume(AudioManager.STREAM_ALARM);
+        double streamVolume = (streamMaxVolume / Constants.WARNING_MAX_VOLUME) * volume;
+        int roundedStreamVolume = (int) Math.round(streamVolume);
+        am.setStreamVolume(AudioManager.STREAM_ALARM, roundedStreamVolume, 0);
     }
 
     private void playFallbackSound() throws IOException {

@@ -1,14 +1,7 @@
 
-<supports-screen>
-<uses-configuration>
-<uses-feature>
 kolla TODO
 
-sälj premim app via play store: Intent intent = new Intent(Intent.ACTION_VIEW,
-                                Uri.parse("market://search?q=pname:MY_PACKAGE_NAME"));
-                                startActivity(intent);
 
-varför visas glimt av fönstret om laddaren inte i?
 
 testfall
 ----------
@@ -23,6 +16,7 @@ tyst läge och noll volym
 kolla att inställningar fungerar om man ändrar t.ex tid först, och slutligen aktiverar varningen
 ha testfall för att laddaren är i men batteriet är fullt
 att det funkar även om man dödar appen i en hanterare
+olika skärmar
 
 https://developer.android.com/tools/testing/index.html
 

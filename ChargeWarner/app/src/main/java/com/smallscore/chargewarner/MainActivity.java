@@ -2,6 +2,9 @@ package com.smallscore.chargewarner;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
@@ -9,6 +12,8 @@ import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.TextView;
 
 public class MainActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceChangeListener {  //extends FragmentActivity implements TimePickerDialog.OnTimeSetListener {
 
@@ -17,6 +22,7 @@ public class MainActivity extends PreferenceActivity implements SharedPreference
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+        setSummaryOfRingTone();
         showInitialHelp();
     }
 
@@ -73,6 +79,7 @@ public class MainActivity extends PreferenceActivity implements SharedPreference
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if(preference.getKey().equals("ringtone")) {
+            setSummaryOfRingTone(preference, (String) newValue);
             Logic.onChangedRingTone(this, preference, (String) newValue);
         }
         return true;
@@ -80,5 +87,22 @@ public class MainActivity extends PreferenceActivity implements SharedPreference
 
     private void showInitialHelp() {
         new InitialHelp(this).show();
+    }
+
+    private void setSummaryOfRingTone() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        String strRingtonePreference = prefs.getString("ringtone", "DEFAULT_RINGTONE_URI");
+        Uri ringtoneUri = Uri.parse(strRingtonePreference);
+        Ringtone ringtone = RingtoneManager.getRingtone(this, ringtoneUri);
+        String name = ringtone.getTitle(this);
+        Preference p = findPreference("ringtone");
+        p.setSummary(name);
+    }
+
+    private void setSummaryOfRingTone(Preference p, String ringTone) {
+        Uri ringtoneUri = Uri.parse(ringTone);
+        Ringtone ringtone = RingtoneManager.getRingtone(this, ringtoneUri);
+        String name = ringtone.getTitle(this);
+        p.setSummary(name);
     }
 }
