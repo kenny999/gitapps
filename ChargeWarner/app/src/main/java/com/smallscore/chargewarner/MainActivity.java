@@ -1,5 +1,7 @@
 package com.smallscore.chargewarner;
 
+import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.Ringtone;
@@ -14,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceChangeListener {  //extends FragmentActivity implements TimePickerDialog.OnTimeSetListener {
 
@@ -58,6 +61,9 @@ public class MainActivity extends PreferenceActivity implements SharedPreference
         int id = item.getItemId();
         if(id == R.id.help) {
             startActivity(new Intent(this, HelpActivity.class));
+            return true;
+        } else if(id == R.id.sendsupportmail) {
+            startActivity(new Intent(this, SupportEmailActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

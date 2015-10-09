@@ -30,4 +30,6 @@
     <string name="playWhenSilent_explanation">Allow tone to be played, also if device is muted</string>
     <string name="warning_volume">Sound volume</string>
     <string name="warning_volume_explanation">Set the tone\'s sound volume</string>
+    <string name="title_activity_supportemail">Send support email</string>
+    <string name="supportemail_explanation">Send an email to the support department if you have questions, or would like to report a problem. The address is: smallscore201@gmail.com</string>
 </resources>

@@ -55,6 +55,12 @@
             android:name=".HelpActivity"
             android:label="@string/title_activity_help" >
         </activity>
+
+        <activity
+            android:name=".SupportEmailActivity"
+            android:label="@string/title_activity_supportemail" >
+        </activity>
+
     </application>
 
 </manifest>

@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import java.util.Calendar;
 
@@ -26,6 +27,7 @@ public class WarningAlarmManager {
     }
 
     private static void scheduleWarning(Calendar calendar, PendingIntent pIntent, AlarmManager alarmManager) {
+        Log.d("WarningAlarmManager", "Scheduling for " + calendar);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pIntent);
         } else {

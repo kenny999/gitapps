@@ -30,4 +30,6 @@
     <string name="playWhenSilent_explanation">Tillåt att ljud spelas även om enheten är i tyst läge</string>
     <string name="warning_volume">Ljudvolym</string>
     <string name="warning_volume_explanation">Ställ in ljudvolymen</string>
+    <string name="title_activity_supportemail">Skicka mail till supporten</string>
+    <string name="supportemail_explanation">Skicka ett email till supporten om du har frågor eller vill rapportera problem. Adressen är: smallscore201@gmail.com</string>
 </resources>

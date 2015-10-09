@@ -37,7 +37,6 @@ public class Logic {
     }
 
     public static void onBoot(Context context) {
-        if(1==1) return; // TODO
         setAlarmIfEnabled(context, PreferenceManager.getDefaultSharedPreferences(context));
     }
 
@@ -45,15 +44,19 @@ public class Logic {
         setAlarmIfEnabled(context, PreferenceManager.getDefaultSharedPreferences(context));
     }
 
-    public static void onWarningNotPopped(Context context) {
-        setAlarmIfEnabled(context, PreferenceManager.getDefaultSharedPreferences(context));
-    }
-
     public static boolean shouldPlayWarning(Context context) {
+        if(warningCurrentlyPlaying(context)){
+            return false;
+        }
         if(pluggedToCharger(context)){
             return true;
         }
         return false;
+    }
+
+    private static boolean warningCurrentlyPlaying(Context context) {
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getBoolean(Constants.WARNING_SCREEN_IS_RUNNING_PREFERENCE, false);
     }
 
     private static void setAlarmIfEnabled(Context context, SharedPreferences sharedPreferences) {
@@ -66,7 +69,7 @@ public class Logic {
     }
 
     private static Calendar makeCalendar(Context context) {
-        boolean stabilityTest = false;
+        boolean stabilityTest = true;
         if(stabilityTest){
             return doStabilityTest();
         }
@@ -82,16 +85,13 @@ public class Logic {
         calendar.set(Calendar.HOUR_OF_DAY, warningHour);
         calendar.set(Calendar.MINUTE, warningMinute);
         calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
 
         String s1 = now.get(Calendar.MONTH)+":"+now.get(Calendar.DAY_OF_MONTH)+":"+now.get(Calendar.HOUR_OF_DAY)+":"+now.get(Calendar.MINUTE);
         String s2 = calendar.get(Calendar.MONTH)+":"+calendar.get(Calendar.DAY_OF_MONTH)+calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE);
 
         if(now.before(calendar)){
             // schedule for today.
-            // if warning time is very close, add 10 seconds, to avoid that warning time is in the past due to real time problems
-       //     if(Math.abs(now.getTimeInMillis() - calendar.getTimeInMillis()) < 10000){
-         //       calendar.add(Calendar.MILLISECOND, 10000);
-           // } TODO
         } else {
             calendar.add(Calendar.DAY_OF_MONTH, 1);
         }
@@ -100,7 +100,7 @@ public class Logic {
 
     private static Calendar doStabilityTest() {
         Calendar now = Calendar.getInstance();
-        now.add(Calendar.SECOND, 30);
+        now.add(Calendar.MINUTE, 1);
         return now;
     }
 

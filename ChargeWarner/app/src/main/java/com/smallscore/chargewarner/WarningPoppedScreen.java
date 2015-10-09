@@ -31,6 +31,7 @@ public class WarningPoppedScreen extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_warning_popped_screen);
+        updatePreferencesToRunning(true);
         setFlagsToKeepScreenOn();
         if(savedInstanceState == null){
             WarningService.releaseWakeLock();
@@ -49,6 +50,7 @@ public class WarningPoppedScreen extends Activity {
     public void onDestroy(){
         super.onDestroy();
         resetSound((AudioManager) getSystemService(Context.AUDIO_SERVICE));
+        updatePreferencesToRunning(false);
     }
 
     @Override
@@ -64,6 +66,13 @@ public class WarningPoppedScreen extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return super.onOptionsItemSelected(item);
+    }
+
+    private void updatePreferencesToRunning(boolean running) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(Constants.WARNING_SCREEN_IS_RUNNING_PREFERENCE, running);
+        editor.commit();
     }
 
     private void createDismissButton(final AudioManager am) {

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.util.Log;
 
 /**
  * Created by kenneth on 2015-08-13.
@@ -25,23 +26,21 @@ public class WarningService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        Log.d(TAG, "In "+TAG);
         try {
             if(! Logic.shouldPlayWarning(getBaseContext())){
-                Logic.onWarningNotPopped(this);
                 return;
             }
-            if(intent != null) {
-                PowerManager pm = (PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
-                acquireWakeLock(pm);
-                Intent alarmIntent = new Intent(getBaseContext(), WarningPoppedScreen.class);
-                alarmIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                alarmIntent.putExtras(intent);
-                getApplication().startActivity(alarmIntent);
-                Logic.onWarningPopped(this);
-            }
-
+            PowerManager pm = (PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
+            acquireWakeLock(pm);
+            Intent alarmIntent = new Intent(getBaseContext(), WarningPoppedScreen.class);
+            alarmIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getApplication().startActivity(alarmIntent);
         } finally {
-            WarningBroadcastReceiver.completeWakefulIntent(intent);
+            Logic.onWarningPopped(this);
+            if(intent != null) {
+                WarningBroadcastReceiver.completeWakefulIntent(intent);
+            }
         }
 
     }
