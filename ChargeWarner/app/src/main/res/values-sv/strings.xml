@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">ChargeWarner</string>
     <string name="help">Hjälp</string>
-    <string name="enabled">Varning aktiverad</string>
+    <string name="enabled">Schemalagd varning</string>
     <string name="select_tone">Välj signal</string>
     <string name="title_activity_warning_popped_screen">ChargeWarner</string>
     <string name="warning_popped">Varning!</string>
@@ -9,19 +9,20 @@
     <string name="dismiss">Avbryt</string>
     <string name="ok_button">OK</string>
     <string name="cancel_button">Avbryt</string>
-    <string name="enabled_explanation">Aktivera eller avaktivera varning</string>
+    <string name="enabled_explanation">Aktivera eller avaktivera schemalagd varning</string>
     <string name="tone_explanation">Varningen kommer spela detta ljud</string>
-    <string name="warning_time">Varningstid</string>
+    <string name="warning_time">Schemalagd varningstid</string>
     <string name="warningTime_explanation">Tid då varningen kommer utföras</string>
     <string name="title_activity_help">Hjälp</string>
     <string name="help_text_short">Denna app kommer spela ett ljud om laddaren är i vid en viss tidpunkt. Du behöver aktivera varningen på nästa skärm.</string>
     <string name="help_text"><![CDATA[
     <p>
-    Denna app kommer spela ett ljud om laddaren är i vid en viss tidpunkt. </p>
-    <p>Syftet är att kontrollera t.ex. vid sängdags, för att undvika att laddaren är i över natten. Appen komer undersöka om laddaren är i vid angiven tidpunkt, och i så fall spela ett ljud.</p>
+    Denna app har två huvudsakliga funktioner:<br/>
+    * Batteritemperatursvarning: Spelar ett ljud om batteritemperaturen blir för hög.<br/>
+    * Schemalagd varning: Spelar ett ljud om laddaren är i vid en viss tidpunkt. Syftet är att kontrollera t.ex. vid sängdags, för att undvika att laddaren är i över natten.<br/></p>
      <p>Med inställningarna kan du:<br/><br/>
-      * Aktivera/avaktivera varningen<br/>
-      * Välja den tidpunkt då appen ska kontrollera om laddaren är i<br/>
+      * Aktivera/avaktivera varningarna<br/>
+      * Välja tidpunkt för den schemalagda varningen<br/>
       * Välja vilket ljud som ska spelas<br/>
       * Ställa in ljudvolymen<br/>
       * Bestämma om ljud ska spelas även om enheten är i tyst läge
@@ -32,4 +33,14 @@
     <string name="warning_volume_explanation">Ställ in ljudvolymen</string>
     <string name="title_activity_supportemail">Skicka mail till supporten</string>
     <string name="supportemail_explanation">Skicka ett email till supporten om du har frågor eller vill rapportera problem. Adressen är: smallscore201@gmail.com</string>
+    <string name="temperatureWarningEnabled">Batteritemperatur</string>
+    <string name="temperatureWarningEnabled_explanation">Aktivera för att få en varning om batteritemperaturen blir hög under laddning</string>
+    <string name="tempwarning_popped_long">Batteritemperaturen är hög</string>
+    <string name="temp_pref_summary">Temperaturvarningen spelar om denna batteritemperatur nås</string>
+    <string name="temperature_title">Temperaturgräns</string>
+    <string name="degrees_celcius">grader celcius</string>
+    <string name="eula">Genom att klicka ok, accepterar du att använda appen som den är, och kommer inte hålla dess utvecklare ansvarig för eventuella problem.</string>
+    <string name="batteryFullEnabled">Fullt batteri</string>
+    <string name="batteryFull_enabled_explanation">Aktivera för att få en varning då batteriet blir fulladdat</string>
+    <string name="batteryfullwarning_popped_long">Batteriet är fulladdat.</string>
 </resources>

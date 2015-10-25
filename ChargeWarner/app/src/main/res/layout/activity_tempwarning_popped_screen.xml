@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/warning_popped_long"
-        android:text="@string/warning_popped_long"
+        android:text="@string/tempwarning_popped_long"
         />
 
     <Button
@@ -35,7 +35,6 @@
         android:text="@string/dismiss"
         android:textSize="38dp"
         />
-
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"
         android:layout_width="wrap_content"
@@ -45,5 +44,4 @@
         ads:adSize="BANNER"
         ads:adUnitId="@string/AdOnWarningPage">
     </com.google.android.gms.ads.AdView>
-
 </LinearLayout>

@@ -18,7 +18,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceChangeListener {  //extends FragmentActivity implements TimePickerDialog.OnTimeSetListener {
+public class MainActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceChangeListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +26,8 @@ public class MainActivity extends PreferenceActivity implements SharedPreference
         addPreferencesFromResource(R.xml.preferences);
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         setSummaryOfRingTone();
-        showInitialHelp();
+        new SimpleEula(this).show();
+       //String deviceID = DebugUtils.getDeviceID(this);
     }
 
     @Override
@@ -42,7 +43,7 @@ public class MainActivity extends PreferenceActivity implements SharedPreference
         getPreferenceScreen().getSharedPreferences()
                 .registerOnSharedPreferenceChangeListener(this);
         // A patch to overcome OnSharedPreferenceChange not being called by RingtonePreference bug
-        RingtonePreference pref = (RingtonePreference) findPreference("ringtone");
+        RingtonePreference pref = (RingtonePreference) findPreference(Constants.RINGTONE_PREFERENCE);
         pref.setOnPreferenceChangeListener(this);
     }
 
@@ -72,11 +73,17 @@ public class MainActivity extends PreferenceActivity implements SharedPreference
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         switch (key){
-            case "enabled":
+            case Constants.ENABLED_PREFERENCE:
                 Logic.onEnabledChanged(this, sharedPreferences);
                 break;
-            case "warningTime":
+            case Constants.WARNING_TIME_PREFERENCE:
                 Logic.onWarningTimeChanged(this);
+                break;
+            case Constants.TEMPERATURE_WARNING_ENABLED_PREFERENCE:
+                Logic.onTemperatureWarningChanged(this);
+                break;
+            case Constants.BATTERY_FULL_WARNING_ENABLED_PREFERENCE:
+                Logic.onBatteryFullWarningChanged(this);
                 break;
             // case "ringtone": Android has bug for ringtones, using http://stackoverflow.com/questions/6725105/ringtonepreference-not-firing-onsharedpreferencechanged
         }
@@ -84,7 +91,7 @@ public class MainActivity extends PreferenceActivity implements SharedPreference
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
-        if(preference.getKey().equals("ringtone")) {
+        if(preference.getKey().equals(Constants.RINGTONE_PREFERENCE)) {
             setSummaryOfRingTone(preference, (String) newValue);
             Logic.onChangedRingTone(this, preference, (String) newValue);
         }
@@ -97,11 +104,11 @@ public class MainActivity extends PreferenceActivity implements SharedPreference
 
     private void setSummaryOfRingTone() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        String strRingtonePreference = prefs.getString("ringtone", "DEFAULT_RINGTONE_URI");
+        String strRingtonePreference = prefs.getString(Constants.RINGTONE_PREFERENCE, Constants.DEFAULT_RINGTONE_URI);
         Uri ringtoneUri = Uri.parse(strRingtonePreference);
         Ringtone ringtone = RingtoneManager.getRingtone(this, ringtoneUri);
         String name = ringtone.getTitle(this);
-        Preference p = findPreference("ringtone");
+        Preference p = findPreference(Constants.RINGTONE_PREFERENCE);
         p.setSummary(name);
     }
 

@@ -6,17 +6,21 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class WarningPoppedScreen extends WarningPoppedScreenAbstract {
+/**
+ * Created by kenneth on 2015-10-23.
+ */
+public class BatteryFullPoppedScreen extends WarningPoppedScreenAbstract{
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_warning_popped_screen);
+        setContentView(R.layout.activity_batteryfull_warning_popped);
         super.doAds();
-        updatePreferencesToRunning(Constants.WARNING_SCREEN_IS_RUNNING_PREFERENCE, true);
+        updatePreferencesToRunning(Constants.BATTERY_FULL_WARNING_SCREEN_IS_RUNNING_PREFERENCE, true);
         setFlagsToKeepScreenOn();
         if(savedInstanceState == null){
-            WarningService.releaseWakeLock();
+            BatteryFullService.releaseWakeLock();
         }
         super.play();
     }
@@ -25,7 +29,7 @@ public class WarningPoppedScreen extends WarningPoppedScreenAbstract {
     public void onDestroy(){
         super.onDestroy();
         resetSound((AudioManager) getSystemService(Context.AUDIO_SERVICE));
-        updatePreferencesToRunning(Constants.WARNING_SCREEN_IS_RUNNING_PREFERENCE, false);
+        updatePreferencesToRunning(Constants.BATTERY_FULL_WARNING_SCREEN_IS_RUNNING_PREFERENCE, false);
     }
 
     @Override

@@ -5,11 +5,29 @@
         android:textSize="20px">
 
     <CheckBoxPreference
+        android:id="@+id/temperatureWarningEnabledCheckbox"
+        android:key="temperatureWarningEnabled"
+        android:title="@string/temperatureWarningEnabled"
+        android:summary="@string/temperatureWarningEnabled_explanation"
+        android:defaultValue="true"
+        />
+    <com.smallscore.chargewarner.TemperaturePreference
+        android:key="temperature"
+        android:title="@string/temperature_title"
+        android:summary="dummy"
+        android:id="@+id/pref_temperature"
+        android:layout="@layout/pref_layout"
+        android:defaultValue="50"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+    <CheckBoxPreference
         android:id="@+id/enabledCheckbox"
         android:key="enabled"
         android:title="@string/enabled"
         android:summary="@string/enabled_explanation"
-        android:defaultValue="false"
+        android:defaultValue="true"
         />
 
     <com.smallscore.chargewarner.TimePreference
@@ -19,8 +37,15 @@
         android:key="warningTime"
         android:defaultValue="23:00"
         android:layout_width="match_parent"
-         android:layout_height="match_parent" />
+        android:layout_height="match_parent" />
 
+    <CheckBoxPreference
+        android:id="@+id/batteryFullEnabledCheckbox"
+        android:key="batteryFullEnabled"
+        android:title="@string/batteryFullEnabled"
+        android:summary="@string/batteryFull_enabled_explanation"
+        android:defaultValue="true"
+        />
     <RingtonePreference
         android:key="ringtone"
         android:title="@string/select_tone"
@@ -30,7 +55,7 @@
         android:summary="@string/tone_explanation"
         android:defaultValue="content://settings/system/alarm_alert" />
 
-    <com.smallscore.chargewarner.NumberPickerPreference
+    <com.smallscore.chargewarner.VolumePreference
         android:key="warningVolume"
         android:title="@string/warning_volume"
         android:summary="@string/warning_volume_explanation"

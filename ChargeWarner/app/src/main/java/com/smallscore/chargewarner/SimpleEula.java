@@ -42,7 +42,7 @@ public class SimpleEula {
 
             //Includes the updates as well so users know what changed.
      //       String message = mActivity.getString(R.string.updates) + "\n\n" + mActivity.getString(R.string.eula);
-            String message = "";//mActivity.getString(R.string.eula);
+            String message = mActivity.getString(R.string.eula);
             AlertDialog.Builder builder = new AlertDialog.Builder(mActivity)
                     .setTitle(title)
                     .setMessage(message)

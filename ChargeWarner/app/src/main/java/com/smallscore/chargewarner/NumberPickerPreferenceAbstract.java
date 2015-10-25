@@ -1,34 +1,30 @@
 package com.smallscore.chargewarner;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.NumberPicker;
 
-public class NumberPickerPreference extends DialogPreference {
-    private NumberPicker mPicker;
-    private Integer mNumber = 0;
-    private static int minValue = 0;
+/**
+ * Created by kenneth on 2015-10-14.
+ */
+public abstract class NumberPickerPreferenceAbstract extends DialogPreference {
 
-    public NumberPickerPreference(Context context, AttributeSet attrs) {
+    protected NumberPicker mPicker;
+    protected Integer mNumber = 0;
+    protected static int minValue = 0;
+
+    public NumberPickerPreferenceAbstract(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public NumberPickerPreference(Context context, AttributeSet attrs, int defStyle) {
+    public NumberPickerPreferenceAbstract(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         setPositiveButtonText(android.R.string.ok);
         setNegativeButtonText(android.R.string.cancel);
     }
 
-    @Override
-    protected View onCreateDialogView() {
-        mPicker = new NumberPicker(getContext());
-        mPicker.setMinValue(minValue);
-        mPicker.setMaxValue(Constants.WARNING_MAX_VOLUME);
-        mPicker.setValue(mNumber);
-        return mPicker;
-    }
 
     @Override
     protected void onDialogClosed(boolean positiveResult) {
@@ -61,8 +57,4 @@ public class NumberPickerPreference extends DialogPreference {
         return a.getInt(index, 0);
     }
 
-    @Override
-    public CharSequence getSummary() {
-        return "" + mNumber + " / "+ Constants.WARNING_MAX_VOLUME;
-    }
 }

@@ -10,16 +10,25 @@
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-    <supports-screens android:largeScreens="true" android:xlargeScreens="true"></supports-screens>
-    <!--android:uses-permission
+    <supports-screens
+        android:largeScreens="true"
+        android:xlargeScreens="true" />
+
+    <android:uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <android:uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <!--
+android:uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="18" />
     <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <android:uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="18" /-->
-
+        android:maxSdkVersion="18" /
+    -->
     <application
+        android:name=".CWApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -41,26 +50,54 @@
         </receiver>
         <receiver android:name=".WarningBroadcastReceiver" >
         </receiver>
+        <receiver android:name=".TemperatureWarningBroadcastReceiver" >
+        </receiver>
 
         <activity
             android:name=".WarningPoppedScreen"
+            android:label="@string/title_activity_warning_popped_screen" >
+        </activity>
+        <activity
+            android:name=".TemperatureWarningPoppedScreen"
+            android:label="@string/title_activity_warning_popped_screen" >
+        </activity>
+        <activity
+            android:name=".BatteryFullPoppedScreen"
             android:label="@string/title_activity_warning_popped_screen" >
         </activity>
 
         <service
             android:name=".WarningService"
             android:enabled="true" />
-
+        <service
+            android:name=".TemperatureWarningService"
+            android:enabled="true" />
+        <service
+            android:name=".BatteryFullService"
+            android:enabled="true" />
         <activity
             android:name=".HelpActivity"
             android:label="@string/title_activity_help" >
         </activity>
-
         <activity
             android:name=".SupportEmailActivity"
             android:label="@string/title_activity_supportemail" >
         </activity>
 
+        <receiver
+            android:name=".PowerConnectReceiver"
+            android:enabled="true"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".BatteryFullBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true" >
+        </receiver>
     </application>
 
 </manifest>

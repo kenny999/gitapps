@@ -28,6 +28,7 @@ public class TimePreference extends Preference implements TimePickerDialog.OnTim
         super(context, attrs);
     }
 
+
     public TimePreference(Context context) {
         super(context);
     }

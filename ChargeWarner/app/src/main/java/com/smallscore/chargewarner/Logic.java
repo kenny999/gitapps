@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.media.AudioManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -37,15 +36,21 @@ public class Logic {
     }
 
     public static void onBoot(Context context) {
-        setAlarmIfEnabled(context, PreferenceManager.getDefaultSharedPreferences(context));
+        resetCurrentPlayingPreferences(context);
+  // TODO      setAlarmIfEnabled(context, PreferenceManager.getDefaultSharedPreferences(context));
+        // TODO temp alarm
+        if(pluggedToCharger(context)){
+            setBatteryFullAlarmIfEnabled(context, PreferenceManager.getDefaultSharedPreferences(context));
+        }
     }
 
     public static void onWarningPopped(Context context) {
+        increaseNumberOfWarnings(context);
         setAlarmIfEnabled(context, PreferenceManager.getDefaultSharedPreferences(context));
     }
 
     public static boolean shouldPlayWarning(Context context) {
-        if(warningCurrentlyPlaying(context)){
+        if(anyWarningCurrentlyPlaying(context)){
             return false;
         }
         if(pluggedToCharger(context)){
@@ -54,13 +59,136 @@ public class Logic {
         return false;
     }
 
+    public static boolean anyWarningCurrentlyPlaying(Context context) {
+        return warningCurrentlyPlaying(context) || temperatureWarningCurrentlyPlaying(context) || batteryLevelWarningCurrentlyPlaying(context);
+    }
+
+    public static boolean shouldPlayTemperatureWarning(Context context) {
+        if(anyWarningCurrentlyPlaying(context)){
+            return false;
+        }
+        if(! pluggedToCharger(context)){
+            return false;
+        }
+        IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        Intent intent = context.registerReceiver(null, ifilter);
+        final int health  = intent.getIntExtra(BatteryManager.EXTRA_HEALTH, 0);
+        final int temperatureInDegrees = intent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 0) / 10;
+        boolean overheat = health == BatteryManager.BATTERY_HEALTH_OVERHEAT;
+        int  temperaturePref = PreferenceManager.getDefaultSharedPreferences(context).getInt(Constants.TEMPERATURE_PREFERENCE, Constants.HIGH_TEMPERATURE);
+        boolean highTemperature = temperatureInDegrees >= temperaturePref;
+        return (overheat || highTemperature);
+    }
+
+    public static void onTemperatureWarningPopped(Context context) {
+        increaseNumberOfWarnings(context);
+        setTemperatureAlarmIfEnabled(context, PreferenceManager.getDefaultSharedPreferences(context));
+    }
+
+    public static void onBatteryFullWarningPopped(Context context) {
+        increaseNumberOfWarnings(context);
+        setBatteryFullAlarmIfEnabled(context, PreferenceManager.getDefaultSharedPreferences(context));
+    }
+
+    private static void increaseNumberOfWarnings(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        int currentNumber = sharedPreferences.getInt(Constants.NUM_WARNINGS_PREFERENCE, 0);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(Constants.NUM_WARNINGS_PREFERENCE, currentNumber + 1);
+        editor.commit();
+    }
+
+    public static void onTemperatureWarningChanged(Context context) {
+        setTemperatureAlarmIfEnabled(context, PreferenceManager.getDefaultSharedPreferences(context));
+    }
+
+    public static void setTemperatureAlarmIfEnabled(Context context, SharedPreferences sharedPreferences) {
+        boolean temperatureWarningEnabled = sharedPreferences.getBoolean(Constants.TEMPERATURE_WARNING_ENABLED_PREFERENCE, true);
+        if(temperatureWarningEnabled){
+            WarningAlarmManager.resetTemperatureWarning(context, makeTemperatureCalendar());
+        } else {
+            WarningAlarmManager.cancelTemperatureWarning(context);
+        }
+    }
+
+    public static void onAppStarted(Context context) {
+        resetCurrentPlayingPreferences(context);
+        scheduleWarningsIfFirstStart(context);
+    }
+
+    public static boolean shouldDisplayBanner(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        int currentNumber = sharedPreferences.getInt(Constants.NUM_WARNINGS_PREFERENCE, 0);
+        return currentNumber > Constants.NUM_ADS_BEFORE_SHOWING_BANNER;
+    }
+
+    public static boolean shouldDisplayInterstitialAd(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        int currentNumber = sharedPreferences.getInt(Constants.NUM_WARNINGS_PREFERENCE, 0);
+        return currentNumber > Constants.NUM_ADS_BEFORE_SHOWING_INSTERSTITIAL_AD;
+    }
+
+    public static void onChargerPlugged(Context context) {
+        setBatteryFullAlarmIfEnabled(context, PreferenceManager.getDefaultSharedPreferences(context));
+    }
+
+    public static void onChargerUnplugged(Context context) {
+        WarningAlarmManager.cancelBatteryFullWarning(context);
+    }
+
+    public static boolean shouldPlayBatteryFullWarning(Context context) {
+        if(anyWarningCurrentlyPlaying(context)){
+            return false;
+        }
+        if(! pluggedToCharger(context)){
+            return false;
+        }
+        return batteryFullyCharged(context);
+    }
+
+    public static void onBatteryFullWarningChanged(Context context) {
+        setBatteryFullAlarmIfEnabled(context, PreferenceManager.getDefaultSharedPreferences(context));
+    }
+
+    private static void scheduleWarningsIfFirstStart(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        boolean firstStart = sharedPreferences.getBoolean(Constants.FIRST_START_PREFERENCE, true);
+        if(firstStart){
+            setAlarmIfEnabled(context, sharedPreferences);
+            setTemperatureAlarmIfEnabled(context, sharedPreferences);
+            setBatteryFullAlarmIfEnabled(context, sharedPreferences);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean(Constants.FIRST_START_PREFERENCE, false);
+            editor.commit();
+        }
+    }
+
+    private static void resetCurrentPlayingPreferences(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(Constants.WARNING_SCREEN_IS_RUNNING_PREFERENCE, false);
+        editor.putBoolean(Constants.TEMPERATURE_WARNING_SCREEN_IS_RUNNING_PREFERENCE, false);
+        editor.putBoolean(Constants.BATTERY_FULL_WARNING_SCREEN_IS_RUNNING_PREFERENCE, false);
+        editor.commit();
+    }
+
     private static boolean warningCurrentlyPlaying(Context context) {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getBoolean(Constants.WARNING_SCREEN_IS_RUNNING_PREFERENCE, false);
     }
 
+    private static boolean temperatureWarningCurrentlyPlaying(Context context) {
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getBoolean(Constants.TEMPERATURE_WARNING_SCREEN_IS_RUNNING_PREFERENCE, false);
+    }
+
+    private static boolean batteryLevelWarningCurrentlyPlaying(Context context) {
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getBoolean(Constants.BATTERY_FULL_WARNING_SCREEN_IS_RUNNING_PREFERENCE, false);
+    }
+
     private static void setAlarmIfEnabled(Context context, SharedPreferences sharedPreferences) {
-        boolean enabled = sharedPreferences.getBoolean("enabled", false);
+        boolean enabled = sharedPreferences.getBoolean(Constants.ENABLED_PREFERENCE, true);
         if(enabled){
             WarningAlarmManager.resetWarning(context, makeCalendar(context));
         } else {
@@ -69,14 +197,14 @@ public class Logic {
     }
 
     private static Calendar makeCalendar(Context context) {
-        boolean stabilityTest = true;
+        boolean stabilityTest = false;
         if(stabilityTest){
             return doStabilityTest();
         }
         Calendar now = Calendar.getInstance();
 
         Calendar calendar = Calendar.getInstance();
-        String warningTime = PreferenceManager.getDefaultSharedPreferences(context).getString("warningTime", null);
+        String warningTime = PreferenceManager.getDefaultSharedPreferences(context).getString(Constants.WARNING_TIME_PREFERENCE, null);
         if(warningTime == null){
             warningTime = TimePreference.getDefaultTime();
         }
@@ -115,4 +243,40 @@ public class Logic {
         return isCharging;
     }
 
+    private static boolean batteryFullyCharged(Context context) {
+        // From http://developer.android.com/training/monitoring-device-state/battery-monitoring.html
+        IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        Intent batteryStatus = context.registerReceiver(null, ifilter);
+        // Are we charging / charged?
+        int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
+        boolean isFull = status == BatteryManager.BATTERY_STATUS_FULL;
+        return isFull;
+    }
+
+    private static Calendar makeTemperatureCalendar() {
+        Calendar now = Calendar.getInstance();
+        now.add(Calendar.MINUTE, Constants.CHECK_TEMPERATURE_INTERVAL_MINUTES);
+        return now;
+    }
+
+    private static Calendar makeBatteryFullCalendar() {
+        Calendar now = Calendar.getInstance();
+        now.add(Calendar.MINUTE, Constants.CHECK_BATTERY_LEVEL_INTERVAL_MINUTES);
+        return now;
+    }
+
+    private static Calendar makeBatteryLevelCalendar(Context context) {
+        Calendar now = Calendar.getInstance();
+        now.add(Calendar.MINUTE, Constants.CHECK_BATTERY_LEVEL_INTERVAL_MINUTES);
+        return now;
+    }
+
+    private static void setBatteryFullAlarmIfEnabled(Context context, SharedPreferences sharedPreferences) {
+        boolean enabled = sharedPreferences.getBoolean(Constants.BATTERY_FULL_WARNING_ENABLED_PREFERENCE, true);
+        if(enabled){
+            WarningAlarmManager.resetBatteryFullWarning(context, makeBatteryFullCalendar());
+        } else {
+            WarningAlarmManager.cancelBatteryFullWarning(context);
+        }
+    }
 }

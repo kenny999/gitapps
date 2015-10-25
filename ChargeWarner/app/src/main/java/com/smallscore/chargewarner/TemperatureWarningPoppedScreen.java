@@ -1,22 +1,37 @@
 package com.smallscore.chargewarner;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.res.AssetFileDescriptor;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
 
-public class WarningPoppedScreen extends WarningPoppedScreenAbstract {
+import java.io.IOException;
+
+
+public class TemperatureWarningPoppedScreen extends WarningPoppedScreenAbstract {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_warning_popped_screen);
+        setContentView(R.layout.activity_tempwarning_popped_screen);
         super.doAds();
-        updatePreferencesToRunning(Constants.WARNING_SCREEN_IS_RUNNING_PREFERENCE, true);
+        updatePreferencesToRunning(Constants.TEMPERATURE_WARNING_SCREEN_IS_RUNNING_PREFERENCE, true);
         setFlagsToKeepScreenOn();
         if(savedInstanceState == null){
-            WarningService.releaseWakeLock();
+            TemperatureWarningService.releaseWakeLock();
         }
         super.play();
     }
@@ -25,7 +40,7 @@ public class WarningPoppedScreen extends WarningPoppedScreenAbstract {
     public void onDestroy(){
         super.onDestroy();
         resetSound((AudioManager) getSystemService(Context.AUDIO_SERVICE));
-        updatePreferencesToRunning(Constants.WARNING_SCREEN_IS_RUNNING_PREFERENCE, false);
+        updatePreferencesToRunning(Constants.TEMPERATURE_WARNING_SCREEN_IS_RUNNING_PREFERENCE, false);
     }
 
     @Override
