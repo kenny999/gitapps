@@ -141,7 +141,7 @@ public abstract class WarningPoppedScreenAbstract extends Activity {
 
     public void doAds() {
         Log.d(TAG, "doAds");
-        boolean testing = true; // TODO
+        boolean testing = false;
         String interstitialAdUnit = null;
         if(testing){
             interstitialAdUnit = Constants.INTERSTITIAL_TEST_AD;
