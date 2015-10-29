@@ -24,29 +24,27 @@ public class Logic {
         if (ringtone != null) {
             preference.setSummary(ringtone.getTitle(context));
         }
-        setAlarmIfEnabled(context, PreferenceManager.getDefaultSharedPreferences(context));
+        setAlarmIfEnabledAndChargerPlugged(context, PreferenceManager.getDefaultSharedPreferences(context));
     }
 
     public static void onEnabledChanged(Context context, SharedPreferences sharedPreferences) {
-        setAlarmIfEnabled(context, sharedPreferences);
+        setAlarmIfEnabledAndChargerPlugged(context, sharedPreferences);
     }
 
     public static void onWarningTimeChanged(Context context) {
-        setAlarmIfEnabled(context, PreferenceManager.getDefaultSharedPreferences(context));
+        setAlarmIfEnabledAndChargerPlugged(context, PreferenceManager.getDefaultSharedPreferences(context));
     }
 
     public static void onBoot(Context context) {
         resetCurrentPlayingPreferences(context);
-  // TODO      setAlarmIfEnabled(context, PreferenceManager.getDefaultSharedPreferences(context));
-        // TODO temp alarm
-        if(pluggedToCharger(context)){
-            setBatteryFullAlarmIfEnabled(context, PreferenceManager.getDefaultSharedPreferences(context));
-        }
+        setAlarmIfEnabledAndChargerPlugged(context, PreferenceManager.getDefaultSharedPreferences(context));
+        setBatteryFullAlarmIfEnabledAndChargerPlugged(context, PreferenceManager.getDefaultSharedPreferences(context));
+        setTemperatureAlarmIfEnabledAndChargerPlugged(context, PreferenceManager.getDefaultSharedPreferences(context));
     }
 
     public static void onWarningPopped(Context context) {
         increaseNumberOfWarnings(context);
-        setAlarmIfEnabled(context, PreferenceManager.getDefaultSharedPreferences(context));
+        setAlarmIfEnabledAndChargerPlugged(context, PreferenceManager.getDefaultSharedPreferences(context));
     }
 
     public static boolean shouldPlayWarning(Context context) {
@@ -60,7 +58,7 @@ public class Logic {
     }
 
     public static boolean anyWarningCurrentlyPlaying(Context context) {
-        return warningCurrentlyPlaying(context) || temperatureWarningCurrentlyPlaying(context) || batteryLevelWarningCurrentlyPlaying(context);
+        return warningCurrentlyPlaying(context) || temperatureWarningCurrentlyPlaying(context) || batteryFullWarningCurrentlyPlaying(context);
     }
 
     public static boolean shouldPlayTemperatureWarning(Context context) {
@@ -82,12 +80,12 @@ public class Logic {
 
     public static void onTemperatureWarningPopped(Context context) {
         increaseNumberOfWarnings(context);
-        setTemperatureAlarmIfEnabled(context, PreferenceManager.getDefaultSharedPreferences(context));
+        setTemperatureAlarmIfEnabledAndChargerPlugged(context, PreferenceManager.getDefaultSharedPreferences(context));
     }
 
     public static void onBatteryFullWarningPopped(Context context) {
         increaseNumberOfWarnings(context);
-        setBatteryFullAlarmIfEnabled(context, PreferenceManager.getDefaultSharedPreferences(context));
+        setBatteryFullAlarmIfEnabledAndChargerPlugged(context, PreferenceManager.getDefaultSharedPreferences(context));
     }
 
     private static void increaseNumberOfWarnings(Context context) {
@@ -99,21 +97,14 @@ public class Logic {
     }
 
     public static void onTemperatureWarningChanged(Context context) {
-        setTemperatureAlarmIfEnabled(context, PreferenceManager.getDefaultSharedPreferences(context));
-    }
-
-    public static void setTemperatureAlarmIfEnabled(Context context, SharedPreferences sharedPreferences) {
-        boolean temperatureWarningEnabled = sharedPreferences.getBoolean(Constants.TEMPERATURE_WARNING_ENABLED_PREFERENCE, true);
-        if(temperatureWarningEnabled){
-            WarningAlarmManager.resetTemperatureWarning(context, makeTemperatureCalendar());
-        } else {
-            WarningAlarmManager.cancelTemperatureWarning(context);
-        }
+        setTemperatureAlarmIfEnabledAndChargerPlugged(context, PreferenceManager.getDefaultSharedPreferences(context));
     }
 
     public static void onAppStarted(Context context) {
         resetCurrentPlayingPreferences(context);
-        scheduleWarningsIfFirstStart(context);
+        setAlarmIfEnabledAndChargerPlugged(context, PreferenceManager.getDefaultSharedPreferences(context));
+        setBatteryFullAlarmIfEnabledAndChargerPlugged(context, PreferenceManager.getDefaultSharedPreferences(context));
+        setTemperatureAlarmIfEnabledAndChargerPlugged(context, PreferenceManager.getDefaultSharedPreferences(context));
     }
 
     public static boolean shouldDisplayBanner(Context context) {
@@ -129,11 +120,15 @@ public class Logic {
     }
 
     public static void onChargerPlugged(Context context) {
+        setAlarmIfEnabled(context, PreferenceManager.getDefaultSharedPreferences(context));
         setBatteryFullAlarmIfEnabled(context, PreferenceManager.getDefaultSharedPreferences(context));
+        setTemperatureAlarmIfEnabled(context, PreferenceManager.getDefaultSharedPreferences(context));
     }
 
     public static void onChargerUnplugged(Context context) {
+        WarningAlarmManager.cancelWarning(context);
         WarningAlarmManager.cancelBatteryFullWarning(context);
+        WarningAlarmManager.cancelTemperatureWarning(context);
     }
 
     public static boolean shouldPlayBatteryFullWarning(Context context) {
@@ -147,20 +142,7 @@ public class Logic {
     }
 
     public static void onBatteryFullWarningChanged(Context context) {
-        setBatteryFullAlarmIfEnabled(context, PreferenceManager.getDefaultSharedPreferences(context));
-    }
-
-    private static void scheduleWarningsIfFirstStart(Context context) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        boolean firstStart = sharedPreferences.getBoolean(Constants.FIRST_START_PREFERENCE, true);
-        if(firstStart){
-            setAlarmIfEnabled(context, sharedPreferences);
-            setTemperatureAlarmIfEnabled(context, sharedPreferences);
-            setBatteryFullAlarmIfEnabled(context, sharedPreferences);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean(Constants.FIRST_START_PREFERENCE, false);
-            editor.commit();
-        }
+        setBatteryFullAlarmIfEnabledAndChargerPlugged(context, PreferenceManager.getDefaultSharedPreferences(context));
     }
 
     private static void resetCurrentPlayingPreferences(Context context) {
@@ -182,9 +164,39 @@ public class Logic {
         return prefs.getBoolean(Constants.TEMPERATURE_WARNING_SCREEN_IS_RUNNING_PREFERENCE, false);
     }
 
-    private static boolean batteryLevelWarningCurrentlyPlaying(Context context) {
+    private static boolean batteryFullWarningCurrentlyPlaying(Context context) {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getBoolean(Constants.BATTERY_FULL_WARNING_SCREEN_IS_RUNNING_PREFERENCE, false);
+    }
+
+    private static void setAlarmIfEnabledAndChargerPlugged(Context context, SharedPreferences sharedPreferences) {
+        boolean enabled = sharedPreferences.getBoolean(Constants.ENABLED_PREFERENCE, true);
+        boolean chargerPlugged = pluggedToCharger(context);
+        if(enabled && chargerPlugged){
+            WarningAlarmManager.resetWarning(context, makeCalendar(context));
+        } else {
+            WarningAlarmManager.cancelWarning(context);
+        }
+    }
+
+    private static void setBatteryFullAlarmIfEnabledAndChargerPlugged(Context context, SharedPreferences sharedPreferences) {
+        boolean enabled = sharedPreferences.getBoolean(Constants.BATTERY_FULL_WARNING_ENABLED_PREFERENCE, true);
+        boolean chargerPlugged = pluggedToCharger(context);
+        if(enabled && chargerPlugged){
+            WarningAlarmManager.resetBatteryFullWarning(context, makeBatteryFullCalendar());
+        } else {
+            WarningAlarmManager.cancelBatteryFullWarning(context);
+        }
+    }
+
+    public static void setTemperatureAlarmIfEnabledAndChargerPlugged(Context context, SharedPreferences sharedPreferences) {
+        boolean temperatureWarningEnabled = sharedPreferences.getBoolean(Constants.TEMPERATURE_WARNING_ENABLED_PREFERENCE, true);
+        boolean chargerPlugged = pluggedToCharger(context);
+        if(temperatureWarningEnabled && chargerPlugged){
+            WarningAlarmManager.resetTemperatureWarning(context, makeTemperatureCalendar());
+        } else {
+            WarningAlarmManager.cancelTemperatureWarning(context);
+        }
     }
 
     private static void setAlarmIfEnabled(Context context, SharedPreferences sharedPreferences) {
@@ -193,6 +205,24 @@ public class Logic {
             WarningAlarmManager.resetWarning(context, makeCalendar(context));
         } else {
             WarningAlarmManager.cancelWarning(context);
+        }
+    }
+
+    private static void setBatteryFullAlarmIfEnabled(Context context, SharedPreferences sharedPreferences) {
+        boolean enabled = sharedPreferences.getBoolean(Constants.BATTERY_FULL_WARNING_ENABLED_PREFERENCE, true);
+        if(enabled){
+            WarningAlarmManager.resetBatteryFullWarning(context, makeBatteryFullCalendar());
+        } else {
+            WarningAlarmManager.cancelBatteryFullWarning(context);
+        }
+    }
+
+    public static void setTemperatureAlarmIfEnabled(Context context, SharedPreferences sharedPreferences) {
+        boolean temperatureWarningEnabled = sharedPreferences.getBoolean(Constants.TEMPERATURE_WARNING_ENABLED_PREFERENCE, true);
+        if(temperatureWarningEnabled){
+            WarningAlarmManager.resetTemperatureWarning(context, makeTemperatureCalendar());
+        } else {
+            WarningAlarmManager.cancelTemperatureWarning(context);
         }
     }
 
@@ -261,22 +291,7 @@ public class Logic {
 
     private static Calendar makeBatteryFullCalendar() {
         Calendar now = Calendar.getInstance();
-        now.add(Calendar.MINUTE, Constants.CHECK_BATTERY_LEVEL_INTERVAL_MINUTES);
+        now.add(Calendar.MINUTE, Constants.CHECK_BATTERY_FULL_INTERVAL_MINUTES);
         return now;
-    }
-
-    private static Calendar makeBatteryLevelCalendar(Context context) {
-        Calendar now = Calendar.getInstance();
-        now.add(Calendar.MINUTE, Constants.CHECK_BATTERY_LEVEL_INTERVAL_MINUTES);
-        return now;
-    }
-
-    private static void setBatteryFullAlarmIfEnabled(Context context, SharedPreferences sharedPreferences) {
-        boolean enabled = sharedPreferences.getBoolean(Constants.BATTERY_FULL_WARNING_ENABLED_PREFERENCE, true);
-        if(enabled){
-            WarningAlarmManager.resetBatteryFullWarning(context, makeBatteryFullCalendar());
-        } else {
-            WarningAlarmManager.cancelBatteryFullWarning(context);
-        }
     }
 }

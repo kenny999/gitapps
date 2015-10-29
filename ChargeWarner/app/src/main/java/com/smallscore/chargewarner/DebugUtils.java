@@ -2,6 +2,7 @@ package com.smallscore.chargewarner;
 
 import android.content.Context;
 import android.provider.Settings;
+import android.widget.Toast;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -15,6 +16,12 @@ public class DebugUtils {
         String android_id = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
         String deviceId = md5(android_id).toUpperCase();
         return deviceId;
+    }
+
+    public static void toastMsg(Context context, String msg){
+        if(Constants.LOG_TOAST) {
+            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+        }
     }
 
     public static final String md5(final String s) {

@@ -194,4 +194,13 @@ public abstract class WarningPoppedScreenAbstract extends Activity {
             playAlarmTone();
         }
     }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        if(mAdView != null){
+            mAdView.destroy();
+        }
+    }
 }

@@ -5,7 +5,7 @@
     <string name="select_tone">Select Tone</string>
     <string name="title_activity_warning_popped_screen">ChargeWarner</string>
     <string name="warning_popped">Warning!</string>
-    <string name="warning_popped_long">The charger is plugged.</string>
+    <string name="warning_popped_long">Scheduled warning: The charger is plugged.</string>
     <string name="dismiss">Cancel</string>
     <string name="ok_button">OK</string>
     <string name="cancel_button">Cancel</string>
@@ -17,9 +17,10 @@
     <string name="help_text_short">This app will play a tone if the charger is plugged at a specified time. You will need to enable the warning on the next screen.</string>
     <string name="help_text"><![CDATA[
     <p>
-    This app has two major functions:<br/>
+    This app has three major functions:<br/>
     * Battery temperature warning: Plays a tone if the charger is plugged at a specified time. The intention is to check for example at bed time, to avoid charging the device during night.<br/>
-    * Scheduled time warning: Plays a tone if the battery temperature gets too high.</p>
+    * Scheduled time warning: Plays a tone if the battery temperature gets too high.<br/>
+    * Fully charged warning: Plays a tone when the battery gets fully charged, so you don\'t charge longer than needed<br/></p>
     <p></p>
      <p>With the settings, you are able to:<br/><br/>
       * Enable/disable the warnings<br/>

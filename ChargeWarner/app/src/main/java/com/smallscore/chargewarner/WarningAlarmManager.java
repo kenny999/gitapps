@@ -14,6 +14,7 @@ import java.util.Calendar;
 public class WarningAlarmManager {
 
     public static void cancelWarning(Context context){
+        DebugUtils.toastMsg(context, "cancelWarning");
         PendingIntent pIntent = createPendingIntent(context);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pIntent);
@@ -21,6 +22,7 @@ public class WarningAlarmManager {
 
     public static void resetWarning(Context context, Calendar newWarningTime) {
         cancelWarning(context);
+        DebugUtils.toastMsg(context, "resetWarning");
         PendingIntent pIntent = createPendingIntent(context);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         scheduleWarning(newWarningTime, pIntent, alarmManager);
@@ -28,12 +30,14 @@ public class WarningAlarmManager {
 
     public static void resetTemperatureWarning(Context context, Calendar newTemperatureWarningTime) {
         cancelTemperatureWarning(context);
+        DebugUtils.toastMsg(context, "resetTemperatureWarning");
         PendingIntent pIntent = createTemperaturePendingIntent(context);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         scheduleWarning(newTemperatureWarningTime, pIntent, alarmManager);
     }
 
     public static void cancelTemperatureWarning(Context context) {
+        DebugUtils.toastMsg(context, "cancelTemperatureWarning");
         PendingIntent pIntent = createTemperaturePendingIntent(context);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pIntent);
@@ -41,12 +45,14 @@ public class WarningAlarmManager {
 
     public static void resetBatteryFullWarning(Context context, Calendar calendar) {
         cancelBatteryFullWarning(context);
+        DebugUtils.toastMsg(context, "resetBatteryFullWarning");
         PendingIntent pIntent = createBatteryFullPendingIntent(context);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         scheduleWarning(calendar, pIntent, alarmManager);
     }
 
     public static void cancelBatteryFullWarning(Context context) {
+        DebugUtils.toastMsg(context, "cancelBatteryFullWarning");
         PendingIntent pIntent = createBatteryFullPendingIntent(context);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pIntent);
