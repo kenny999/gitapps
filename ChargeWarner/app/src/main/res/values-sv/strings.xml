@@ -40,6 +40,10 @@
     <string name="temp_pref_summary">Temperaturvarningen spelar om denna batteritemperatur nås</string>
     <string name="temperature_title">Temperaturgräns</string>
     <string name="degrees_celcius">grader celcius</string>
+    <string name="AdOnWarningPage">ca-app-pub-5696406433165303/9898896879</string>
+    <string name="AdAfterWarning">ca-app-pub-5696406433165303/2375630071</string>
+    <string name="AdAfterWarningMiddlePage">ca-app-pub-5696406433165303/9449741670</string>
+    <string name="title_activity_banner">BannerActivity</string>
     <string name="eula">Genom att klicka ok, accepterar du att använda appen som den är, och kommer inte hålla dess utvecklare ansvarig för eventuella problem.</string>
     <string name="batteryFullEnabled">Fullt batteri</string>
     <string name="batteryFull_enabled_explanation">Aktivera för att få en varning då batteriet blir fulladdat</string>

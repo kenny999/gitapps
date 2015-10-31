@@ -41,7 +41,7 @@
     <string name="temp_pref_summary">Temperature warning plays at this battery temperature</string>
     <string name="temperature_title">Temperature threshold</string>
     <string name="degrees_celcius">degrees celcius</string>
-    <string name="AdOnWarningPage">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="AdOnWarningPage">ca-app-pub-5696406433165303/9898896879</string>
     <string name="AdAfterWarning">ca-app-pub-5696406433165303/2375630071</string>
     <string name="AdAfterWarningMiddlePage">ca-app-pub-5696406433165303/9449741670</string>
     <string name="title_activity_banner">BannerActivity</string>
