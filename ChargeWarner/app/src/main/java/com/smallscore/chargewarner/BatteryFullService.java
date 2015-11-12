@@ -25,13 +25,14 @@ public class BatteryFullService extends IntentService {
             if(! Logic.shouldPlayBatteryFullWarning(getBaseContext())){
                 return;
             }
+            Logic.onBatteryFullWarningPopped(this);
             PowerManager pm = (PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
             acquireWakeLock(pm);
             Intent alarmIntent = new Intent(getBaseContext(), BatteryFullPoppedScreen.class);
             alarmIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getApplication().startActivity(alarmIntent);
         } finally {
-            Logic.onBatteryFullWarningPopped(this);
+            Logic.onBatteryFullWarningConsidered(this);
             if(intent != null) {
                 BatteryFullBroadcastReceiver.completeWakefulIntent(intent);
             }

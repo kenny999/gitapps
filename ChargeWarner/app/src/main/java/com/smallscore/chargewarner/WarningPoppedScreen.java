@@ -13,7 +13,7 @@ public class WarningPoppedScreen extends WarningPoppedScreenAbstract {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_warning_popped_screen);
         super.doAds();
-        updatePreferencesToRunning(Constants.WARNING_SCREEN_IS_RUNNING_PREFERENCE, true);
+        updatePreferencesToRunning(Constants.Preferences.WARNING_SCREEN_IS_RUNNING_PREFERENCE, true);
         setFlagsToKeepScreenOn();
         if(savedInstanceState == null){
             WarningService.releaseWakeLock();
@@ -25,7 +25,7 @@ public class WarningPoppedScreen extends WarningPoppedScreenAbstract {
     public void onDestroy(){
         super.onDestroy();
         resetSound((AudioManager) getSystemService(Context.AUDIO_SERVICE));
-        updatePreferencesToRunning(Constants.WARNING_SCREEN_IS_RUNNING_PREFERENCE, false);
+        updatePreferencesToRunning(Constants.Preferences.WARNING_SCREEN_IS_RUNNING_PREFERENCE, false);
     }
 
     @Override

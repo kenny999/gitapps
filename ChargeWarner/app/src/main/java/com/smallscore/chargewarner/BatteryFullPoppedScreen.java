@@ -17,7 +17,7 @@ public class BatteryFullPoppedScreen extends WarningPoppedScreenAbstract{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_batteryfull_warning_popped);
         super.doAds();
-        updatePreferencesToRunning(Constants.BATTERY_FULL_WARNING_SCREEN_IS_RUNNING_PREFERENCE, true);
+        updatePreferencesToRunning(Constants.Preferences.BATTERY_FULL_WARNING_SCREEN_IS_RUNNING_PREFERENCE, true);
         setFlagsToKeepScreenOn();
         if(savedInstanceState == null){
             BatteryFullService.releaseWakeLock();
@@ -29,7 +29,7 @@ public class BatteryFullPoppedScreen extends WarningPoppedScreenAbstract{
     public void onDestroy(){
         super.onDestroy();
         resetSound((AudioManager) getSystemService(Context.AUDIO_SERVICE));
-        updatePreferencesToRunning(Constants.BATTERY_FULL_WARNING_SCREEN_IS_RUNNING_PREFERENCE, false);
+        updatePreferencesToRunning(Constants.Preferences.BATTERY_FULL_WARNING_SCREEN_IS_RUNNING_PREFERENCE, false);
     }
 
     @Override

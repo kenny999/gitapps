@@ -1,7 +1,15 @@
 
 kolla TODO
 
-
+nya testfall
+--------------
+nya funktioner:
+sms mobil+padda
+rate på google play
+statistik, räknar rätt
+stänga larmet med att dra ur laddaren. vid alla typer av larm
+vrida och vända vid annonser
+meny i rätt aktiviteter
 
 testfall
 ----------
@@ -42,6 +50,8 @@ http://www.cbc.ca/news/canada/toronto/samsung-galaxy-ace-ii-x-battery-explodes-c
 
 spanska: móvil explotar
 tyska: Mobilexplodieren
+
+posta på toms hardware
 
 promotion plan
 -------------

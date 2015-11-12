@@ -18,6 +18,10 @@ public class HelpActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help);
 
+        TextView textView2 = (TextView) findViewById (R.id.initial_help_text);
+        textView2.setMovementMethod(LinkMovementMethod.getInstance());
+        textView2.setText(Html.fromHtml(getString(R.string.initial_help_text)));
+
         TextView textView = (TextView) findViewById (R.id.help_text);
         textView.setMovementMethod(LinkMovementMethod.getInstance());
         textView.setText(Html.fromHtml(getString(R.string.help_text)));

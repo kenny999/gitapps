@@ -31,13 +31,14 @@ public class TemperatureWarningService extends IntentService {
             if(! Logic.shouldPlayTemperatureWarning(getBaseContext())){
                 return;
             }
+            Logic.onTemperatureWarningPopped(this);
             PowerManager pm = (PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
             acquireWakeLock(pm);
             Intent alarmIntent = new Intent(getBaseContext(), TemperatureWarningPoppedScreen.class);
             alarmIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getApplication().startActivity(alarmIntent);
         } finally {
-            Logic.onTemperatureWarningPopped(this);
+            Logic.onTemperatureWarningConsidered(this);
             if(intent != null) {
                 TemperatureWarningBroadcastReceiver.completeWakefulIntent(intent);
             }

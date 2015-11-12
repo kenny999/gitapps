@@ -14,10 +14,12 @@
         android:largeScreens="true"
         android:xlargeScreens="true" />
 
-    <android:uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <android:uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!--android:uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <android:uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /-->
 
+    <!-- android:uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" / -->
+    <!-- android:uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" / -->
     <!--
 android:uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
@@ -56,14 +58,23 @@ android:uses-permission
         <activity
             android:name=".WarningPoppedScreen"
             android:label="@string/title_activity_warning_popped_screen" >
+            <intent-filter>
+                <action android:name="cui" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".TemperatureWarningPoppedScreen"
             android:label="@string/title_activity_warning_popped_screen" >
+            <intent-filter>
+                <action android:name="cui" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".BatteryFullPoppedScreen"
             android:label="@string/title_activity_warning_popped_screen" >
+            <intent-filter>
+                <action android:name="cui" />
+            </intent-filter>
         </activity>
 
         <service
@@ -75,6 +86,7 @@ android:uses-permission
         <service
             android:name=".BatteryFullService"
             android:enabled="true" />
+
         <activity
             android:name=".HelpActivity"
             android:label="@string/title_activity_help" >
@@ -98,6 +110,18 @@ android:uses-permission
             android:enabled="true"
             android:exported="true" >
         </receiver>
-    </application>
 
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
+        <activity
+            android:name=".StatisticsActivity"
+            android:label="@string/title_activity_statistics" >
+        </activity>
+        <activity
+            android:name=".RecommendationActivity"
+            android:label="@string/title_activity_recommendation" >
+        </activity>
+    </application>
 </manifest>

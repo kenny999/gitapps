@@ -3,45 +3,68 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:gravity="center">
 
-    <TextView
-        android:id="@+id/alarm_screen_title"
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.CardView
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="28dp"
-        android:text="@string/warning_popped"
-        android:textSize="38dp"
-        />
+        android:elevation="100dp"
+        card_view:cardCornerRadius="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginBottom="10dp"
+        >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/warning_popped_long"
-        android:text="@string/batteryfullwarning_popped_long"
-        />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:gravity="center"
+            android:paddingLeft="5dp"
+            android:layout_gravity="center_vertical"
+            android:text="@string/batteryfullwarning_popped_long"
+            android:textSize="18dp"
+            />
+    </android.support.v7.widget.CardView>
 
-    <Button
+    <mehdi.sakout.fancybuttons.FancyButton
         android:id="@+id/alarm_screen_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="270dp"
+        android:layout_height="60dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp"
+        fancy:fb_borderColor="#FFFFFF"
+        fancy:fb_borderWidth="1dp"
+        fancy:fb_defaultColor="#e62f17"
+        fancy:fb_focusColor="#9a120f"
+        fancy:fb_radius="4dp"
+        fancy:fb_text="@string/ok_button"
         android:layout_marginTop="20dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="106dp"
-        android:text="@string/dismiss"
-        android:textSize="38dp"
-        />
-    <com.google.android.gms.ads.AdView
+        android:layout_marginBottom="20dp"
+        fancy:fb_textSize="30sp"
+        fancy:fb_textColor="#FFFFFF" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="40dp"
+        android:background="@android:color/darker_gray"/>
+
+    <!--com.google.android.gms.ads.AdView
         android:id="@+id/adView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        ads:adSize="BANNER"
-        ads:adUnitId="@string/AdOnWarningPage">
-    </com.google.android.gms.ads.AdView>
+        ads:adSize="LARGE_BANNER"
+        ads:adUnitId="@string/TestAdOnWarningPage">
+    </com.google.android.gms.ads.AdView-->
+
 </LinearLayout>

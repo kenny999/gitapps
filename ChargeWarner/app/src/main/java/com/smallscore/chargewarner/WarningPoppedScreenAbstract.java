@@ -1,24 +1,27 @@
 package com.smallscore.chargewarner;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.AssetFileDescriptor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 
 import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 
 import java.io.IOException;
+
+import mehdi.sakout.fancybuttons.FancyButton;
 
 /**
  * Created by kenneth on 2015-10-13.
@@ -31,6 +34,30 @@ public abstract class WarningPoppedScreenAbstract extends Activity {
     private MediaPlayer mediaPlayer;
     private int oldVolume;
     private boolean deviceSilent;
+
+    private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            onDismiss(context);
+        }
+    };
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        registerReceiver(broadcastReceiver, new IntentFilter(Constants.CHARGER_UNPLUGGED_INTENT));
+    }
+
+    private void onDismiss(Context context) {
+        AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        resetSound(am);
+        if (mInterstitialAd != null && mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+        } else {
+            startActivity(new Intent(context, StatisticsActivity.class));
+        }
+        finish();
+    }
 
     protected void setupMedia(AudioManager am) {
         mediaPlayer = new MediaPlayer();
@@ -55,7 +82,7 @@ public abstract class WarningPoppedScreenAbstract extends Activity {
         final AudioManager am = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
         int ringerMode = am.getRingerMode();
         if(ringerMode == AudioManager.RINGER_MODE_SILENT || ringerMode == AudioManager.RINGER_MODE_VIBRATE) {
-            boolean playWhenSilent = PreferenceManager.getDefaultSharedPreferences(context).getBoolean(Constants.PLAY_WHEN_SILENT_PREFERENCE, false);
+            boolean playWhenSilent = PreferenceManager.getDefaultSharedPreferences(context).getBoolean(Constants.Preferences.PLAY_WHEN_SILENT_PREFERENCE, false);
             if(! playWhenSilent){
                 return true;
             }
@@ -65,7 +92,7 @@ public abstract class WarningPoppedScreenAbstract extends Activity {
 
     protected void playAlarmTone() {
         try {
-            String uriStr = PreferenceManager.getDefaultSharedPreferences(this).getString(Constants.RINGTONE_PREFERENCE, null);
+            String uriStr = PreferenceManager.getDefaultSharedPreferences(this).getString(Constants.Preferences.RINGTONE_PREFERENCE, null);
             Uri uri = Uri.parse(uriStr);
             setVolume();
             mediaPlayer.setDataSource(this, uri);
@@ -85,7 +112,7 @@ public abstract class WarningPoppedScreenAbstract extends Activity {
     }
 
     protected void setVolume() {
-        double volume = PreferenceManager.getDefaultSharedPreferences(this).getInt(Constants.WARNING_VOLUME_PREFERENCE, 0);
+        double volume = PreferenceManager.getDefaultSharedPreferences(this).getInt(Constants.Preferences.WARNING_VOLUME_PREFERENCE, 0);
         AudioManager am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
         double streamMaxVolume = am.getStreamMaxVolume(AudioManager.STREAM_ALARM);
         double streamVolume = (streamMaxVolume / Constants.WARNING_MAX_VOLUME) * volume;
@@ -125,65 +152,33 @@ public abstract class WarningPoppedScreenAbstract extends Activity {
     }
 
     protected void createDismissButton(final AudioManager am) {
-        Button dismissButton = (Button) findViewById(R.id.alarm_screen_button);
+        FancyButton dismissButton = (FancyButton) findViewById(R.id.alarm_screen_button);
+        final Context context = this;
         dismissButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                resetSound(am);
-                if (mInterstitialAd != null && mInterstitialAd.isLoaded()) {
-                    mInterstitialAd.show();
-                }
-                finish();
+                onDismiss(context);
             }
         });
     }
 
     public void doAds() {
         Log.d(TAG, "doAds");
-        boolean testing = false;
-        String interstitialAdUnit = null;
-        if(testing){
-            interstitialAdUnit = Constants.INTERSTITIAL_TEST_AD;
-        } else {
-            interstitialAdUnit = getString(R.string.AdAfterWarningMiddlePage);
-        }
-        if(Logic.shouldDisplayBanner(this)) {
-            Log.d(TAG, "Displaying banner");
-            AdView mAdView = (AdView) findViewById(R.id.adView);
-            AdRequest request;
-            AdRequest.Builder builder = new AdRequest.Builder();
-            if(testing){
-                builder.addTestDevice(AdRequest.DEVICE_ID_EMULATOR)        // All emulators
-                        .addTestDevice(Constants.KENNETH_DEVICE_ID)
-                        .addTestDevice(Constants.MARTINA_DEVICE_ID)
-                        .addTestDevice(Constants.CHRISTINA_DEVICE_ID);
-            }
-            request = builder.build();
-            mAdView.loadAd(request);
-        }
-        if(Logic.shouldDisplayInterstitialAd(this)) {
-            Log.d(TAG, "Displaying Interstitial");
-            mInterstitialAd = new InterstitialAd(getApplicationContext());
-            mInterstitialAd.setAdUnitId(interstitialAdUnit);
-            AdRequest request;
-            AdRequest.Builder builder = new AdRequest.Builder();
-            if(testing){
-                builder.addTestDevice(AdRequest.DEVICE_ID_EMULATOR)        // All emulators
-                        .addTestDevice(Constants.KENNETH_DEVICE_ID)
-                        .addTestDevice(Constants.MARTINA_DEVICE_ID)
-                        .addTestDevice(Constants.CHRISTINA_DEVICE_ID);
-            }
-            request = builder.build();
-            mInterstitialAd.loadAd(request);
+        //AdManager.displayBanner(this, (AdView) findViewById(R.id.adView));
+        mInterstitialAd = AdManager.loadInterstitialAd(this);
+        if(mInterstitialAd != null) {
+            final Context context = this;
             mInterstitialAd.setAdListener(new AdListener() {
                 @Override
                 public void onAdClosed() {
+                    startActivity(new Intent(context, StatisticsActivity.class));
                     finish();
                 }
             });
         }
     }
+
 
     public void play(){
         AudioManager am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
@@ -198,9 +193,13 @@ public abstract class WarningPoppedScreenAbstract extends Activity {
     @Override
     public void onDestroy(){
         super.onDestroy();
+        unregisterReceiver(broadcastReceiver);
+        /*
         AdView mAdView = (AdView) findViewById(R.id.adView);
         if(mAdView != null){
             mAdView.destroy();
         }
+        */
+        mInterstitialAd = null;
     }
 }

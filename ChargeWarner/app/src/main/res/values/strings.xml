@@ -17,17 +17,17 @@
     <string name="help_text_short">This app will play a tone if the charger is plugged at a specified time. You will need to enable the warning on the next screen.</string>
     <string name="help_text"><![CDATA[
     <p>
-    This app has three major functions:<br/>
-    * Battery temperature warning: Plays a tone if the charger is plugged at a specified time. The intention is to check for example at bed time, to avoid charging the device during night.<br/>
-    * Scheduled time warning: Plays a tone if the battery temperature gets too high.<br/>
-    * Fully charged warning: Plays a tone when the battery gets fully charged, so you don\'t charge longer than needed<br/></p>
+    There are three major functions:<br/><br/>
+    <strong>Battery temperature warning</strong>: Plays a tone if the charger is plugged at a specified time. The intention is to check for example at bed time, to avoid charging the device during night.<br/><br/>
+    <strong>Scheduled time warning</strong>: Plays a tone if the battery temperature gets too high.<br/><br/>
+    <strong>Fully charged warning</strong>: Plays a tone when the battery gets fully charged, so you don\'t charge longer than needed.<br/><br/></p>
     <p></p>
      <p>With the settings, you are able to:<br/><br/>
-      * Enable/disable the warnings<br/>
-      * Set time for the scheduled warning.<br/>
-      * Decide which tone to play<br/>
-      * Set the tone\'s sound volume<br/>
-      * Decide if the tone should be played at even if device is muted
+      <strong>Enable/disable</strong> the warnings<br/>
+      Set <strong>time</strong> for the scheduled warning.<br/>
+      Decide <strong>which tone to play</strong><br/>
+      Set the tone\'s <strong>sound volume</strong><br/>
+      Decide if the tone should be played at even if <strong>device is muted</strong>
       </p>]]></string>
     <string name="playWhenSilent">Play also if device silent</string>
     <string name="playWhenSilent_explanation">Allow tone to be played, also if device is muted</string>
@@ -37,11 +37,12 @@
     <string name="supportemail_explanation">Send an email to the support department if you have questions, or would like to report a problem. The address is: smallscore201@gmail.com</string>
     <string name="temperatureWarningEnabled">Battery temperature</string>
     <string name="temperatureWarningEnabled_explanation">Toggle to get a warning if battery temperature gets high during charging</string>
-    <string name="tempwarning_popped_long">Battery temperature high</string>
+    <string name="tempwarning_popped_long">Battery temperature is high.</string>
     <string name="temp_pref_summary">Temperature warning plays at this battery temperature</string>
     <string name="temperature_title">Temperature threshold</string>
     <string name="degrees_celcius">degrees celcius</string>
     <string name="AdOnWarningPage">ca-app-pub-5696406433165303/9898896879</string>
+    <string name="TestAdOnWarningPage"> ca-app-pub-3940256099942544/6300978111</string>
     <string name="AdAfterWarning">ca-app-pub-5696406433165303/2375630071</string>
     <string name="AdAfterWarningMiddlePage">ca-app-pub-5696406433165303/9449741670</string>
     <string name="title_activity_banner">BannerActivity</string>
@@ -49,4 +50,23 @@
     <string name="batteryFullEnabled">Battery full</string>
     <string name="batteryFull_enabled_explanation">Toggle to get a warning when battery gets fully charged</string>
     <string name="batteryfullwarning_popped_long">The battery is fully charged.</string>
+    <string name="title_activity_front_page">ChargeWarner</string>
+    <string name="title_activity_statistics">Statistics</string>
+    <string name="title_activity_recommendation">Recommend</string>
+    <string name="total">Total</string>
+    <string name="temperatureWarnings">High temperature</string>
+    <string name="batteryFull">Full battery</string>
+    <string name="scheduledWarnings">Scheduled warnings</string>
+    <string name="statistics_explanation">Below is information on how many warnings you have received so far.</string>
+    <string name="main_explanation">Welcome to ChargeWarner, which will help you with charging problems.</string>
+    <string name="settings_button">Settings</string>
+    <string name="statistics_button">Statistics</string>
+    <string name="recommend_button">Recommend to others</string>
+    <string name="sms_a_friend">Text a friend</string>
+    <string name="recommendation_explanation">Please use some of the methods below to recommend ChargeWarner.</string>
+    <string name="rate_app">Rate on Google Play</string>
+    <string name="close">Close</string>
+    <string name="initial_help_text"><![CDATA[The app might play warnings at certain events (see below). The app is only operational while the <strong>charger is plugged</strong>. Open Settings to change the settings if you like, but the <strong>default values should be fine</strong>.]]></string>
+    <string name="smsbody">I\'d like to recommend an Android app: ChargeWarner. You can download it here: https://play.google.com/store/apps/details?id=com.smallscore.chargewarner</string>
+    <string name="title_activity_settings">Settings</string>
 </resources>

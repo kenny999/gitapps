@@ -17,16 +17,16 @@
     <string name="help_text_short">Denna app kommer spela ett ljud om laddaren är i vid en viss tidpunkt. Du behöver aktivera varningen på nästa skärm.</string>
     <string name="help_text"><![CDATA[
     <p>
-    Denna app har tre huvudsakliga funktioner:<br/>
-    * Batteritemperatursvarning: Spelar ett ljud om batteritemperaturen blir för hög.<br/>
-    * Schemalagd varning: Spelar ett ljud om laddaren är i vid en viss tidpunkt. Syftet är att kontrollera t.ex. vid sängdags, för att undvika att laddaren är i över natten.<br/>
-    * Varning vid fullt batteri: Spelar ett ljud då batteriet blir fulladdat, så du inte laddar längre än nödvändigt<br/></p>
+    Appen har tre huvudsakliga funktioner:<br/><br/>
+    <strong>Batteritemperatursvarning</strong>: Spelar ett ljud om batteritemperaturen blir för hög.<br/><br/>
+    <strong>Schemalagd varning</strong>: Spelar ett ljud om laddaren är i vid en viss tidpunkt. Syftet är att kontrollera t.ex. vid sängdags, för att undvika att laddaren är i över natten.<br/><br/>
+    <strong>Varning vid fullt batteri</strong>: Spelar ett ljud då batteriet blir fulladdat, så du inte laddar längre än nödvändigt<br/></p><br/>
      <p>Med inställningarna kan du:<br/><br/>
-      * Aktivera/avaktivera varningarna<br/>
-      * Välja tidpunkt för den schemalagda varningen<br/>
-      * Välja vilket ljud som ska spelas<br/>
-      * Ställa in ljudvolymen<br/>
-      * Bestämma om ljud ska spelas även om enheten är i tyst läge
+      <strong>Aktivera/avaktivera</strong> varningarna<br/>
+      Välja <strong>tidpunkt</strong> för den schemalagda varningen<br/>
+      Välja <strong>vilket ljud</strong> som ska spelas<br/>
+      Ställa in <strong>ljudvolymen</strong><br/>
+      Bestämma om ljud ska spelas även om enheten är i <strong>tyst läge</strong>
       </p>]]></string>
     <string name="playWhenSilent">Spela i tyst läge</string>
     <string name="playWhenSilent_explanation">Tillåt att ljud spelas även om enheten är i tyst läge</string>
@@ -36,11 +36,12 @@
     <string name="supportemail_explanation">Skicka ett email till supporten om du har frågor eller vill rapportera problem. Adressen är: smallscore201@gmail.com</string>
     <string name="temperatureWarningEnabled">Batteritemperatur</string>
     <string name="temperatureWarningEnabled_explanation">Aktivera för att få en varning om batteritemperaturen blir hög under laddning</string>
-    <string name="tempwarning_popped_long">Batteritemperaturen är hög</string>
+    <string name="tempwarning_popped_long">Batteritemperaturen är hög.</string>
     <string name="temp_pref_summary">Temperaturvarningen spelar om denna batteritemperatur nås</string>
     <string name="temperature_title">Temperaturgräns</string>
     <string name="degrees_celcius">grader celcius</string>
     <string name="AdOnWarningPage">ca-app-pub-5696406433165303/9898896879</string>
+    <string name="TestAdOnWarningPage"> ca-app-pub-3940256099942544/6300978111</string>
     <string name="AdAfterWarning">ca-app-pub-5696406433165303/2375630071</string>
     <string name="AdAfterWarningMiddlePage">ca-app-pub-5696406433165303/9449741670</string>
     <string name="title_activity_banner">BannerActivity</string>
@@ -48,4 +49,23 @@
     <string name="batteryFullEnabled">Fullt batteri</string>
     <string name="batteryFull_enabled_explanation">Aktivera för att få en varning då batteriet blir fulladdat</string>
     <string name="batteryfullwarning_popped_long">Batteriet är fulladdat.</string>
+    <string name="title_activity_statistics">Statistik</string>
+    <string name="title_activity_recommendation">Rekommendera</string>
+    <string name="total">Totalt</string>
+    <string name="temperatureWarnings">Hög temperatur</string>
+    <string name="batteryFull">Fullt batteri</string>
+    <string name="scheduledWarnings">Schemalagda varningar</string>
+    <string name="statistics_explanation">Nedan finner du information om hur många varningar du fått hittills.</string>
+    <string name="main_explanation">Välkommen till ChargeWarner, som hjälper dig med laddningsproblem.</string>
+    <string name="settings_button">Inställningar</string>
+    <string name="statistics_button">Statistik</string>
+    <string name="recommend_button">Rekommendera andra</string>
+    <string name="close">Stäng</string>
+    <string name="sms_a_friend">Skicka SMS till en vän</string>
+    <string name="recommendation_explanation">Använd gärna någon av nedanstående för att rekommendera ChargeWarner.</string>
+    <string name="title_activity_front_page">ChargeWarner</string>
+    <string name="rate_app">Betygsätt i Play Butik</string>
+    <string name="initial_help_text"><![CDATA[Denna app spelar varningsljud vid vissa händelser (se nedan). Appen arbetar enbart då <strong>laddaren är i</strong>. Öppna Inställningar för att ändra inställningarna om du vill, men <strong>de förvalda inställningarna borde passa</strong>.]]></string>
+    <string name="smsbody">Jag vill rekommendera en Android-app: ChargeWarner. Du kan ladda ner den här: https://play.google.com/store/apps/details?id=com.smallscore.chargewarner</string>
+    <string name="title_activity_settings">Inställningar</string>
 </resources>

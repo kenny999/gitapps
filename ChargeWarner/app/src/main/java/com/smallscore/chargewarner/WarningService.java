@@ -31,13 +31,14 @@ public class WarningService extends IntentService {
             if(! Logic.shouldPlayWarning(getBaseContext())){
                 return;
             }
+            Logic.onWarningPopped(this);
             PowerManager pm = (PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
             acquireWakeLock(pm);
             Intent alarmIntent = new Intent(getBaseContext(), WarningPoppedScreen.class);
             alarmIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getApplication().startActivity(alarmIntent);
         } finally {
-            Logic.onWarningPopped(this);
+            Logic.onWarningConsidered(this);
             if(intent != null) {
                 WarningBroadcastReceiver.completeWakefulIntent(intent);
             }

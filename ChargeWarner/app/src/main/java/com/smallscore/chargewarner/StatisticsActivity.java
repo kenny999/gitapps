@@ -1,41 +1,43 @@
 package com.smallscore.chargewarner;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.app.Activity;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.gms.ads.AdView;
 
-public class MainActivity extends Activity {
+public class StatisticsActivity extends Activity {
 
-    private static String TAG = "MainActivity";
+    private static String TAG = "StatisticsActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_statistics);
         //doAds();
-        new SimpleEula(this).show();
-    }
 
-    public void settings(View view){
-        startActivity(new Intent(this, SettingsActivity.class));
-    }
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        int total = prefs.getInt(Constants.Preferences.NUM_WARNINGS_PREFERENCE, 0);
+        int numScheduledWarnings = prefs.getInt(Constants.Preferences.NUM_SCHEDULED_WARNINGS_PREFERENCE, 0);
+        int numBatteryFullWarnings = prefs.getInt(Constants.Preferences.NUM_BATTERY_FULL_WARNINGS_PREFERENCE, 0);
+        int numTemperatureWarnings = prefs.getInt(Constants.Preferences.NUM_TEMP_WARNINGS_PREFERENCE, 0);
 
-    public void statistics(View view){
-        startActivity(new Intent(this, StatisticsActivity.class));
-    }
+        TextView totalTextView = (TextView) findViewById(R.id.total);
+        TextView numScheduledWarningsTextView = (TextView) findViewById(R.id.numScheduledWarnings);
+        TextView numBatteryFullWarningsTextView = (TextView) findViewById(R.id.numBatteryFullWarnings);
+        TextView numTemperatureWarningsTextView = (TextView) findViewById(R.id.numTemperatureWarnings);
 
-    public void recommend(View view){
-        startActivity(new Intent(this, RecommendationActivity.class));
-    }
-
-    public void help(View view){
-        startActivity(new Intent(this, HelpActivity.class));
+        totalTextView.setText(""+ total);
+        numScheduledWarningsTextView.setText(""+ numScheduledWarnings);
+        numBatteryFullWarningsTextView.setText(""+ numBatteryFullWarnings);
+        numTemperatureWarningsTextView.setText(""+ numTemperatureWarnings);
     }
 
     @Override
@@ -59,6 +61,10 @@ public class MainActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void close(View view){
+        finish();
     }
 
     @Override
