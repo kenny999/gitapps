@@ -10,13 +10,15 @@
 
     <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal">
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:fillViewport="true">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            >
+            android:background="#eeeeee">
+
             <android.support.v7.widget.CardView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -25,7 +27,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginLeft="32dp"
                 android:layout_marginRight="32dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="0dp"
                 >
                 <TextView
                     android:layout_width="match_parent"
@@ -43,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:elevation="100dp"
                 card_view:cardCornerRadius="8dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="4dp"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
                 android:layout_marginLeft="32dp"
@@ -51,7 +53,7 @@
                 >
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:orientation="horizontal"
                     android:weightSum="8">
                     <mehdi.sakout.fancybuttons.FancyButton
@@ -63,7 +65,7 @@
                         android:paddingTop="10dp"
                         fancy:fb_borderColor="#FFFFFF"
                         fancy:fb_borderWidth="1dp"
-                        fancy:fb_defaultColor="#e62f17"
+                        fancy:fb_defaultColor="#303f9f"
                         fancy:fb_focusColor="#9a120f"
                         fancy:fb_radius="4dp"
                         fancy:fb_text="@string/help"
@@ -79,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:elevation="100dp"
                 card_view:cardCornerRadius="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
                 android:layout_marginLeft="32dp"
@@ -100,7 +102,7 @@
                         android:paddingTop="10dp"
                         fancy:fb_borderColor="#FFFFFF"
                         fancy:fb_borderWidth="1dp"
-                        fancy:fb_defaultColor="#e62f17"
+                        fancy:fb_defaultColor="#303f9f"
                         fancy:fb_focusColor="#9a120f"
                         fancy:fb_radius="4dp"
                         fancy:fb_text="@string/settings_button"
@@ -115,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:elevation="100dp"
                 card_view:cardCornerRadius="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
 
                 android:layout_marginLeft="32dp"
                 android:layout_marginRight="32dp"
@@ -136,7 +138,7 @@
                         android:paddingTop="10dp"
                         fancy:fb_borderColor="#FFFFFF"
                         fancy:fb_borderWidth="1dp"
-                        fancy:fb_defaultColor="#e62f17"
+                        fancy:fb_defaultColor="#303f9f"
                         fancy:fb_focusColor="#9a120f"
                         fancy:fb_radius="4dp"
                         fancy:fb_text="@string/statistics_button"
@@ -151,7 +153,7 @@
                 android:layout_height="wrap_content"
                 android:elevation="100dp"
                 card_view:cardCornerRadius="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginLeft="32dp"
                 android:layout_marginRight="32dp"
                 android:paddingTop="8dp"
@@ -172,7 +174,7 @@
                         android:paddingTop="10dp"
                         fancy:fb_borderColor="#FFFFFF"
                         fancy:fb_borderWidth="1dp"
-                        fancy:fb_defaultColor="#e62f17"
+                        fancy:fb_defaultColor="#303f9f"
                         fancy:fb_focusColor="#9a120f"
                         fancy:fb_radius="4dp"
                         fancy:fb_text="@string/recommend_button"
@@ -186,7 +188,138 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="8dp"
+                android:background="@android:color/darker_gray"/>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="100dp"
+                card_view:cardCornerRadius="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:layout_marginBottom="0dp"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="2dip">
+                    <TableRow>
+                        <TextView
+                            android:text="@string/statusHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingLeft="5dp"
+                            android:textStyle="bold"
+                            android:layout_marginRight="8dp"
+                            />
+                    </TableRow>
+                    <TableRow>
+                        <TextView
+                            android:text="@string/warningsActiveStatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingLeft="5dp"
+                            android:layout_marginRight="8dp"
+                            />
+                        <TextView
+                            android:id="@+id/numWarnings"
+                            android:text="12"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginRight="8dp"
+                            />
+                    </TableRow>
+                    <TableRow>
+                        <TextView
+                            android:text="@string/batteryTemperatureStatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingLeft="5dp"
+                            android:layout_marginRight="8dp"
+                            />
+                        <TextView
+                            android:id="@+id/temp"
+                            android:text="12"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginRight="8dp"
+                            />
+                    </TableRow>
+                    <TableRow>
+                        <TextView
+                            android:text="@string/batteryTechnologyStatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingLeft="5dp"
+                            android:layout_marginRight="8dp"
+                            />
+                        <TextView
+                            android:id="@+id/technology"
+                            android:text="12"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginRight="8dp"
+                            />
+                    </TableRow>
+                    <TableRow>
+                        <TextView
+                            android:text="@string/Voltage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingLeft="5dp"
+                            android:layout_marginRight="8dp"
+                            />
+                        <TextView
+                            android:id="@+id/voltage"
+                            android:text="12"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginRight="8dp"
+                            />
+                    </TableRow>
+
+                </TableLayout>
+                <mehdi.sakout.fancybuttons.FancyButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingTop="10dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    fancy:fb_borderColor="#FFFFFF"
+                    fancy:fb_borderWidth="1dp"
+                    fancy:fb_defaultColor="#303f9f"
+                    fancy:fb_focusColor="#9a120f"
+                    fancy:fb_radius="4dp"
+                    fancy:fb_text="@string/refresh_button"
+                    android:onClick="refresh"
+                    android:layout_weight="2"
+                    fancy:fb_textColor="#FFFFFF" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginBottom="20dp"
                 android:background="@android:color/darker_gray"/>
 

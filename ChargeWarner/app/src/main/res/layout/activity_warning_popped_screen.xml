@@ -6,7 +6,8 @@
     xmlns:fancy="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:gravity="center">
+    android:gravity="center"
+    android:background="#eeeeee">
 
     <android.support.v7.widget.CardView
         android:layout_width="fill_parent"
@@ -41,7 +42,7 @@
         android:paddingTop="10dp"
         fancy:fb_borderColor="#FFFFFF"
         fancy:fb_borderWidth="1dp"
-        fancy:fb_defaultColor="#e62f17"
+        fancy:fb_defaultColor="#303f9f"
         fancy:fb_focusColor="#9a120f"
         fancy:fb_radius="4dp"
         fancy:fb_text="@string/ok_button"

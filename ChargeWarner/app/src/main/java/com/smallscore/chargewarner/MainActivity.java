@@ -1,12 +1,15 @@
 package com.smallscore.chargewarner;
 
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.BatteryManager;
 import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.gms.ads.AdView;
 
@@ -18,6 +21,18 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        TextView textView = (TextView) findViewById(R.id.numWarnings);
+        textView.setText(Logic.getNumberOfEnabledWarningsString(this));
+
+        TextView tView = (TextView) findViewById(R.id.temp);
+        tView.setText(Logic.getBatteryTemperatureString(this));
+
+        textView = (TextView) findViewById(R.id.technology);
+        textView.setText(Logic.getBatteryTechnology(this));
+
+        textView = (TextView) findViewById(R.id.voltage);
+        textView.setText(Logic.getBatteryVoltage(this));
         //doAds();
         new SimpleEula(this).show();
     }
@@ -36,6 +51,10 @@ public class MainActivity extends Activity {
 
     public void help(View view){
         startActivity(new Intent(this, HelpActivity.class));
+    }
+
+    public void refresh(View view){
+        recreate();
     }
 
     @Override

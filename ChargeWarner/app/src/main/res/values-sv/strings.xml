@@ -68,4 +68,10 @@
     <string name="initial_help_text"><![CDATA[Denna app spelar varningsljud vid vissa händelser (se nedan). Appen arbetar enbart då <strong>laddaren är i</strong>. Öppna Inställningar för att ändra inställningarna om du vill, men <strong>de förvalda inställningarna borde passa</strong>.]]></string>
     <string name="smsbody">Jag vill rekommendera en Android-app: ChargeWarner. Du kan ladda ner den här: https://play.google.com/store/apps/details?id=com.smallscore.chargewarner</string>
     <string name="title_activity_settings">Inställningar</string>
+    <string name="statusHeader">Status</string>
+    <string name="batteryTemperatureStatus">Batteritemperatur</string>
+    <string name="warningsActiveStatus">Aktiva varningar</string>
+    <string name="refresh_button">Uppdatera</string>
+    <string name="batteryTechnologyStatus">Batteriteknologi</string>
+    <string name="Voltage">Spänning (volt)</string>
 </resources>

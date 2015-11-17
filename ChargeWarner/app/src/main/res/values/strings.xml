@@ -69,4 +69,10 @@
     <string name="initial_help_text"><![CDATA[The app might play warnings at certain events (see below). The app is only operational while the <strong>charger is plugged</strong>. Open Settings to change the settings if you like, but the <strong>default values should be fine</strong>.]]></string>
     <string name="smsbody">I\'d like to recommend an Android app: ChargeWarner. You can download it here: https://play.google.com/store/apps/details?id=com.smallscore.chargewarner</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="statusHeader">Status</string>
+    <string name="batteryTemperatureStatus">Battery temperature</string>
+    <string name="warningsActiveStatus">Warnings active</string>
+    <string name="refresh_button">Refresh</string>
+    <string name="batteryTechnologyStatus">Battery technology</string>
+    <string name="Voltage">Voltage</string>
 </resources>

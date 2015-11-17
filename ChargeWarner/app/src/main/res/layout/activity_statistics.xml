@@ -11,13 +11,16 @@
 
     <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal">
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:fillViewport="true"
+        android:background="#eeeeee">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            >
+            android:background="#eeeeee">
+
             <android.support.v7.widget.CardView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -26,7 +29,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginLeft="32dp"
                 android:layout_marginRight="32dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="0dp"
                 >
 
                 <TextView
@@ -48,7 +51,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="32dp"
                 android:layout_marginRight="32dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="8dp"
                 >
 
                 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -134,12 +137,12 @@
                 android:paddingTop="10dp"
                 fancy:fb_borderColor="#FFFFFF"
                 fancy:fb_borderWidth="1dp"
-                fancy:fb_defaultColor="#e62f17"
+                fancy:fb_defaultColor="#303f9f"
                 fancy:fb_focusColor="#9a120f"
                 fancy:fb_radius="4dp"
                 fancy:fb_text="@string/close"
                 android:onClick="close"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="8dp"
                 fancy:fb_textColor="#FFFFFF"
                 android:gravity="center_horizontal"
                 android:layout_gravity="center_horizontal" />
@@ -147,8 +150,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:background="@android:color/darker_gray"/>
 
             <!--com.google.android.gms.ads.AdView

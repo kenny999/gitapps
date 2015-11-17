@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.BatteryManager;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
+import android.widget.TextView;
 
 import java.util.Calendar;
 
@@ -306,5 +307,35 @@ public class Logic {
         Calendar now = Calendar.getInstance();
         now.add(Calendar.SECOND, Constants.CHECK_BATTERY_FULL_INTERVAL_SECONDS);
         return now;
+    }
+
+    public static String getNumberOfEnabledWarningsString(Context context) {
+        int num = 0;
+        if(pluggedToCharger(context)){
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            for(String pref : Constants.Preferences.WARNING_ENABLED_PREFERENCES){
+                num += (sharedPreferences.getBoolean(pref, true) ? 1 : 0);
+            }
+        }
+        return ""+num+" / "+Constants.Preferences.WARNING_ENABLED_PREFERENCES.size();
+    }
+
+    public static String getBatteryTechnology(Context context) {
+        IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        Intent batteryStatus = context.registerReceiver(null, ifilter);
+        return batteryStatus.getStringExtra(BatteryManager.EXTRA_TECHNOLOGY);
+    }
+
+    public static String getBatteryVoltage(Context context) {
+        IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        Intent batteryStatus = context.registerReceiver(null, ifilter);
+        return ""+ batteryStatus.getIntExtra(BatteryManager.EXTRA_VOLTAGE, -1);
+    }
+
+    public static String getBatteryTemperatureString(Context context){
+        IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        Intent intent = context.registerReceiver(null, ifilter);
+        final int temperatureInMilliDegrees = intent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 0);
+        return ""+temperatureInMilliDegrees/10+"."+temperatureInMilliDegrees %10;
     }
 }

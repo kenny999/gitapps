@@ -1,6 +1,7 @@
 package com.smallscore.chargewarner;
 
-import android.content.IntentFilter;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by kenneth on 2015-09-04.
@@ -35,6 +36,9 @@ public class Constants {
         public static final String NUM_WARNINGS_PREFERENCE = "NUM_WARNINGS_PREFERENCE";
         public static String NUM_BATTERY_FULL_WARNINGS_PREFERENCE = "NUM_BATTERY_FULL_WARNINGS_PREFERENCE";
         public static String NUM_TEMP_WARNINGS_PREFERENCE = "NUM_TEMP_WARNINGS_PREFERENCE";
+
+        public static final List<String> WARNING_ENABLED_PREFERENCES = Arrays.asList(Preferences.ENABLED_PREFERENCE,
+                Preferences.BATTERY_FULL_WARNING_ENABLED_PREFERENCE, Preferences.TEMPERATURE_WARNING_ENABLED_PREFERENCE);
     }
     public static class Ads {
 
